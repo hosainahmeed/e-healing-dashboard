@@ -4,6 +4,7 @@ import { UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { CgBlock } from 'react-icons/cg';
 import { IoIosMail, IoIosWarning } from 'react-icons/io';
 import { Link } from 'react-router-dom';
+import DriverInfotmation from '../../page component/DriverInfotmation';
 
 const DriverTable = () => {
   const [showModal, setShowModal] = useState(false);
@@ -206,7 +207,7 @@ const DriverTable = () => {
         onCancel={() => setShowDriverModal(false)}
         footer={null}
       >
-        {/* TODO : Add Driver Modal thats show all the information of the driver */}
+        <DriverInfotmation />
       </Modal>
     </div>
   );
