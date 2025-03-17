@@ -2,6 +2,7 @@ import React from 'react';
 import { Avatar, Dropdown, Menu } from 'antd';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
+import logo from '../../assets/icons/DUDU.svg';
 function Header() {
   const user = {
     photoURL: 'https://cdn-icons-png.flaticon.com/512/219/219988.png',
@@ -36,11 +37,7 @@ function Header() {
 
   return (
     <div className="px-10  h-16 flex justify-between items-center">
-      <img
-        className="h-12"
-        src={'https://cdn-icons-png.flaticon.com/512/219/219988.png'}
-        alt="DealScout"
-      />
+      <img className="h-12" src={logo} alt="Dudu" />
       <div className="flex items-center  gap-4 text-2xl">
         <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
           <Avatar size={40} src={user?.photoURL} className="cursor-pointer" />

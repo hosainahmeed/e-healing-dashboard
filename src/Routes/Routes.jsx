@@ -11,6 +11,8 @@ import DriverManage from '../pages/DashboardPages/DriverManage/DriverManage';
 import BookingsPage from '../pages/DashboardPages/BookingsManage/BookingsPage';
 import EarningManage from '../Components/Earning/EarningManage';
 import EarningPage from '../pages/DashboardPages/EarningManage/EarningPage';
+import DcoinsConverter from '../pages/DashboardPages/D-coins/DcoinsConverter';
+import CarManagement from '../pages/DashboardPages/CarManagemnet/CarManagement';
 
 export const Routes = createBrowserRouter([
   {
@@ -39,11 +41,11 @@ export const Routes = createBrowserRouter([
       },
       {
         path: '/d-coins-management',
-        element: <h1>Home</h1>,
+        element: <DcoinsConverter />,
       },
       {
         path: '/car-management',
-        element: <h1>Home</h1>,
+        element: <CarManagement />,
       },
       {
         path: '/terms-condition',

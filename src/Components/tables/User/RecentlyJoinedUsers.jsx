@@ -112,6 +112,7 @@ const RecentlyJoinedUsers = () => {
         bordered
       />
       <Modal
+        centered
         visible={showModal}
         onCancel={() => setShowModal(false)}
         footer={null}
@@ -125,6 +126,7 @@ const RecentlyJoinedUsers = () => {
           </p>
           <div className="flex justify-center gap-4 mt-4">
             <Button
+              onClick={() => setShowModal(false)}
               type="primary"
               className="!bg-[var(--bg-pink-high)] !text-white"
             >

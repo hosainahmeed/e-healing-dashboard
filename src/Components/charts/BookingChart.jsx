@@ -57,7 +57,7 @@ const BookingChart = () => {
     return {
       monthlyData: Object.keys(monthMap).map((month) => ({
         name: month,
-        totalUser: monthMap[month],
+        totalEarning: monthMap[month],
       })),
       maxUsers,
     };
@@ -83,7 +83,7 @@ const BookingChart = () => {
           fontSize: '18px',
         }}
       >
-        📈 User Growth Chart
+        📈 Earning Growth Chart
       </h3>
       <Select
         className="min-w-32"
@@ -130,7 +130,7 @@ const BookingChart = () => {
           />
           <Legend wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
           <Bar
-            dataKey="totalUser"
+            dataKey="totalEarning"
             fill="url(#colorUv)"
             barSize={30}
             radius={[5, 5, 0, 0]}

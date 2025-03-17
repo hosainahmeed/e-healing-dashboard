@@ -9,7 +9,7 @@ import {
   DatePicker,
   message,
 } from 'antd';
-import { FaCameraRetro, FaPlus, FaUser, FaEdit } from 'react-icons/fa';
+import { FaCameraRetro, FaPlus, FaUser } from 'react-icons/fa';
 
 const { Step } = Steps;
 
@@ -88,7 +88,7 @@ const DriverRegistrationForm = () => {
       });
 
       console.log('Form data submitted:');
-     console.log(submitFormData)
+      console.log(submitFormData);
 
       message.success('Driver added successfully!');
     } catch (error) {
