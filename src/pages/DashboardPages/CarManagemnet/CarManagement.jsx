@@ -4,6 +4,7 @@ import { FaPlus } from 'react-icons/fa6';
 import Button from '../../../Components/Shared/Button';
 import { Modal } from 'antd';
 import AddNewCar from '../../../Components/page component/CarManage/AddNewCar';
+import CarManagementTable from '../../../Components/tables/CarManagetables/CarManageTable';
 
 function CarManagement() {
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +23,7 @@ function CarManagement() {
           handler={() => setShowModal(true)}
         />
       </div>
-
+      <CarManagementTable />
       <Modal
         width={800}
         open={showModal}
