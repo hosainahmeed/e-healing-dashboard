@@ -1,35 +1,16 @@
-import React, { useEffect } from 'react';
-import { Form, Input, DatePicker, InputNumber, Select } from 'antd';
-import moment from 'moment';
+import React from "react";
+import { Form, Input, DatePicker, InputNumber, Select } from "antd";
 
-const AddCarLicenseInfo = ({ form, initialValues, setLicenseInfo }) => {
-  useEffect(() => {
-    if (initialValues && Object.keys(initialValues).length > 0) {
-      const formattedValues = { ...initialValues };
-      if (initialValues.evpExpiry && !moment.isMoment(initialValues.evpExpiry)) {
-        formattedValues.evpExpiry = moment(initialValues.evpExpiry);
-      }
-      form.setFieldsValue(formattedValues);
-    }
-  }, [initialValues, form]);
-
-  const handleValuesChange = (changedValues, allValues) => {
-    setLicenseInfo((prev) => ({ ...prev, ...allValues }));
-  };
-
+const AddCarLicenseInfo = ({ form }) => {
   return (
     <div>
       <h3 className="text-lg font-medium mb-4">License Information</h3>
-      
-      <Form 
-        layout="vertical" 
-        onValuesChange={handleValuesChange}
-      >
+      <Form layout="vertical">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Form.Item
             name="carNumber"
             label="Car Number"
-            rules={[{ required: true, message: 'Please enter the car number' }]}
+            rules={[{ required: true, message: "Please enter the car number" }]}
           >
             <Input placeholder="E.g., XYZ-9876" />
           </Form.Item>
@@ -37,7 +18,12 @@ const AddCarLicenseInfo = ({ form, initialValues, setLicenseInfo }) => {
           <Form.Item
             name="carLicensePlate"
             label="License Plate"
-            rules={[{ required: true, message: 'Please enter the license plate number' }]}
+            rules={[
+              {
+                required: true,
+                message: "Please enter the license plate number",
+              },
+            ]}
           >
             <Input placeholder="E.g., AB123CD" />
           </Form.Item>
@@ -45,7 +31,7 @@ const AddCarLicenseInfo = ({ form, initialValues, setLicenseInfo }) => {
           <Form.Item
             name="evpNumber"
             label="EVP Number"
-            rules={[{ required: true, message: 'Please enter the EVP number' }]}
+            rules={[{ required: true, message: "Please enter the EVP number" }]}
           >
             <Input placeholder="Environmental Vehicle Permit Number" />
           </Form.Item>
@@ -53,28 +39,32 @@ const AddCarLicenseInfo = ({ form, initialValues, setLicenseInfo }) => {
           <Form.Item
             name="evpExpiry"
             label="EVP Expiry Date"
-            rules={[{ required: true, message: 'Please select the EVP expiry date' }]}
+            rules={[
+              { required: true, message: "Please select the EVP expiry date" },
+            ]}
           >
-            <DatePicker style={{ width: '100%' }} />
+            <DatePicker style={{ width: "100%" }} />
           </Form.Item>
+
           <Form.Item
             name="seats"
             label="Number of Seats"
             rules={[
-              { required: true, message: 'Please enter number of seats' },
+              { required: true, message: "Please enter number of seats" },
             ]}
           >
             <InputNumber
               min={1}
               max={20}
               placeholder="E.g., 5"
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
             />
           </Form.Item>
+
           <Form.Item
             name="vin"
             label="VIN"
-            rules={[{ required: true, message: 'Please enter the VIN' }]}
+            rules={[{ required: true, message: "Please enter the VIN" }]}
           >
             <Input placeholder="Vehicle Identification Number" />
           </Form.Item>
@@ -85,24 +75,24 @@ const AddCarLicenseInfo = ({ form, initialValues, setLicenseInfo }) => {
             rules={[
               {
                 required: true,
-                message: 'Please select the registration date',
+                message: "Please select the registration date",
               },
             ]}
           >
-            <DatePicker style={{ width: '100%' }} />
+            <DatePicker style={{ width: "100%" }} />
           </Form.Item>
 
           <Form.Item
             name="insuranceStatus"
             label="Insurance Status"
             rules={[
-              { required: true, message: 'Please select insurance status' },
+              { required: true, message: "Please select insurance status" },
             ]}
           >
             <Select placeholder="Select insurance status">
-              <Option value="active">Active</Option>
-              <Option value="expired">Expired</Option>
-              <Option value="pending">Pending</Option>
+              <Select.Option value="active">Active</Select.Option>
+              <Select.Option value="expired">Expired</Select.Option>
+              <Select.Option value="pending">Pending</Select.Option>
             </Select>
           </Form.Item>
         </div>
