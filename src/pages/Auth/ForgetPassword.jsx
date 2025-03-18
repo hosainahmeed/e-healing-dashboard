@@ -53,7 +53,7 @@ const ForgetPassword = () => {
           <Button
             type="primary"
             htmlType="submit"
-            className="w-full !bg-[var(--color-white)]"
+            className="w-full !bg-[var(--bg-pink-high)] hover:!bg-[var(--bg-pink-high)] !text-white"
             style={{ marginTop: 10 }}
           >
             Continue with Email

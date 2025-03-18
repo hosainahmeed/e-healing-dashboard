@@ -246,3 +246,7 @@ color: #00B69B !important;
   background-color: #9333EA !important;
   color: white !important;
 }
+.car_upload .ant-upload {
+  width: fit-content !important;
+  padding: 0px 20px !important;
+}

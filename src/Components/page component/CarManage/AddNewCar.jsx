@@ -12,9 +12,9 @@ function AddNewCar() {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-
+  console.log(formData);
   const [imageData, setImageData] = useState({
-    imageFile: null,
+    imageFile: [],
     imagePreview: null,
   });
   const [generalInfo, setGeneralInfo] = useState({});
@@ -32,7 +32,7 @@ function AddNewCar() {
 
   const steps = [
     {
-      title: 'Edit Car Image',
+      title: ' Car Image',
       content: (
         <AddCarImage
           form={form}
@@ -42,7 +42,7 @@ function AddNewCar() {
       ),
     },
     {
-      title: 'Edit General Information',
+      title: 'General Information',
       content: (
         <AddCarGeneralInfo
           form={form}
@@ -52,7 +52,7 @@ function AddNewCar() {
       ),
     },
     {
-      title: 'Edit License Information',
+      title: ' License Information',
       content: (
         <AddCarLicenseInfo
           form={form}
@@ -129,9 +129,14 @@ function AddNewCar() {
       // Create FormData object for submission
       const submitFormData = new FormData();
 
-      // Handle image file
-      if (imageData.imageFile) {
-        submitFormData.append('avatar', imageData.imageFile);
+      // Handle multiple image files
+      if (imageData.imageFile && Array.isArray(imageData.imageFile)) {
+        imageData.imageFile.forEach((file) => {
+          submitFormData.append(`car_image`, file);
+        });
+      } else if (imageData.imageFile) {
+        // Handle single file case
+        submitFormData.append('car_image', imageData.imageFile);
       }
 
       // Process all form data
@@ -143,23 +148,26 @@ function AddNewCar() {
       };
 
       Object.entries(allData).forEach(([key, value]) => {
-        if (key !== 'imageFile' && value !== undefined) {
+        if (key !== 'imageFile' && key !== 'car_image' && value !== undefined) {
           // Handle date objects
           if (value && value.format) {
             submitFormData.append(key, value.format('YYYY-MM-DD'));
           }
           // Handle file lists for documents
           else if (
-            key === 'nationalIdDoc' ||
-            key === 'psvLicense' ||
-            key === 'drivingLicenseDoc'
+            key === 'car_grant_image' ||
+            key === 'car_insurance_image' ||
+            key === 'e_hailing_car_permit_image'
           ) {
             if (value && value.fileList) {
-              value.fileList.forEach((file, index) => {
+              value.fileList.forEach((file) => {
                 if (file.originFileObj) {
-                  submitFormData.append(`${key}_${index}`, file.originFileObj);
+                  submitFormData.append(`${key}`, file.originFileObj);
                 }
               });
+            } else if (value && !value.fileList) {
+              // Handle single file that's not in a fileList format
+              submitFormData.append(key, value);
             }
           }
           // Handle regular values
@@ -193,13 +201,13 @@ function AddNewCar() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <Steps current={current} className="mb-8">
+      <Steps current={current} className="!my-12">
         {steps.map((item) => (
           <Step key={item.title} title={item.title} />
         ))}
       </Steps>
 
-      <Form form={form} layout="vertical" className="mb-6">
+      <Form requiredMark={false} form={form} layout="vertical" className="mb-6">
         {steps[current].content}
       </Form>
 

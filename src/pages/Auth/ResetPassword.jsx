@@ -1,11 +1,10 @@
 import React from 'react';
-import { Form, Button, Typography, Input } from 'antd';
+import { Form, Button, Input, Card } from 'antd';
 import 'antd/dist/reset.css';
 import { EyeTwoTone } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
-// import Logo from '../../Components/Shared/Logo';
-
-const { Title } = Typography;
+import BrandLogo from '../../Components/Shared/BrandLogo';
+import Logo from '../../assets/icons/DUDU.svg';
 
 const ResetPassword = () => {
   const [password, setPassword] = React.useState('');
@@ -24,19 +23,12 @@ const ResetPassword = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[var(--color-white)] p-4">
-      <div className="bg-white shadow-lg relative rounded-2xl p-6 w-full max-w-lg text-start">
-        <Title level={3} className="text-blue-500">
-          {/* <Logo /> */}
-        </Title>
-        <div className="flex mb-6 flex-col items-start">
-          <Title level={3} className="mb-1">
-            Create new password
-          </Title>
-          <h1 className="text-sm text-gray-500">
-            To secure your account, please create a new password.
-          </h1>
-        </div>
-
+      <Card className="bg-white shadow-lg relative rounded-2xl p-6 w-full max-w-lg text-start">
+        <BrandLogo
+          img={Logo}
+          status="Create new password"
+          information="To secure your account, please create a new password."
+        />
         <Form requiredMark={false} layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="Password"
@@ -48,7 +40,11 @@ const ResetPassword = () => {
           >
             <Input.Password
               iconRender={(visible) => (
-                <EyeTwoTone twoToneColor={visible ? 'var(--color-white)' : 'var(--color-white)'} />
+                <EyeTwoTone
+                  twoToneColor={
+                    visible ? 'var(--color-white)' : 'var(--color-white)'
+                  }
+                />
               )}
               value={password}
               onChange={handlePasswordChange}
@@ -78,7 +74,11 @@ const ResetPassword = () => {
           >
             <Input.Password
               iconRender={(visible) => (
-                <EyeTwoTone twoToneColor={visible ? 'var(--color-white)' : 'var(--color-white)'} />
+                <EyeTwoTone
+                  twoToneColor={
+                    visible ? 'var(--color-white)' : 'var(--color-white)'
+                  }
+                />
               )}
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
@@ -95,13 +95,13 @@ const ResetPassword = () => {
           <Button
             type="primary"
             htmlType="submit"
-            className="w-full !bg-[var(--color-white)]"
+            className="w-full !bg-[var(--bg-pink-high)] hover:!bg-[var(--bg-pink-high)] !text-white"
             style={{ marginTop: 10 }}
           >
             Confirm
           </Button>
         </Form>
-      </div>
+      </Card>
     </div>
   );
 };

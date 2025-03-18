@@ -1,34 +1,47 @@
 import React from 'react';
-import { Form, Input, Button, Typography } from 'antd';
+import { Form, Input, Button, Typography, Card } from 'antd';
 import { EyeTwoTone } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
-// import Logo from '../../Components/Shared/Logo';
+import BrandLogo from '../../Components/Shared/BrandLogo';
+import Logo from '../../assets/icons/DUDU.svg';
+import { useLoginUserMutation } from '../../Redux/services/AuthApis/authApis';
+import toast from 'react-hot-toast';
 
 const { Title, Text } = Typography;
 const Login = () => {
   const route = useNavigate();
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    route('/');
+  const [loginUser, { isLoading: isSubmitting }] = useLoginUserMutation();
+
+  const onFinish = async (values) => {
+    const data = { email: values.email, password: values.password };
+    try {
+      localStorage.removeItem('accessToken');
+      const res = await loginUser({ data });
+      if (res?.data?.success) {
+        const accessToken = res?.data?.data?.accessToken;
+        if (accessToken) {
+          localStorage.setItem('accessToken', accessToken);
+          toast.success(res.data.message);
+          route('/');
+        } else {
+          toast.error(res.data.message || 'Something went wrong');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[var(--color-white)] p-4">
-      <div className="bg-white shadow-lg relative rounded-2xl p-6 w-full max-w-lg text-center">
-        <Title level={3} className="text-blue-500">
-          {/* <Logo /> */}
-        </Title>
-        <div className="flex mb-6 flex-col items-start">
-          <Title level={3} className="mb-1">
-            Welcome back,
-          </Title>
-          {/* <Text type="secondary" className="text-[var(--body-text)]">
-            Continue to
-          </Text> */}
-        </div>
-
+      <Card className="bg-white shadow-lg relative rounded-2xl p-6 w-full max-w-lg text-center">
+        <BrandLogo
+          img={Logo}
+          status="Login to your account"
+          information="please enter your email and password to continue"
+        />
         <Form requiredMark={false} layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="Email address"
@@ -73,7 +86,11 @@ const Login = () => {
           >
             <Input.Password
               iconRender={(visible) => (
-                <EyeTwoTone twoToneColor={visible ? 'var(--color-white)' : 'var(--color-white)'} />
+                <EyeTwoTone
+                  twoToneColor={
+                    visible ? 'var(--color-white)' : 'var(--color-white)'
+                  }
+                />
               )}
               placeholder="Password"
               style={{
@@ -85,7 +102,7 @@ const Login = () => {
           <div className="flex items-center justify-end">
             <Link
               to="/forgot-password"
-              className="!text-[var(--color-white)] hover:!underline"
+              className="!text-[var(--color-black)] hover:!underline"
             >
               Forgot password?
             </Link>
@@ -93,13 +110,13 @@ const Login = () => {
           <Button
             type="primary"
             htmlType="submit"
-            className="w-full !bg-[var(--color-white)]"
+            className="w-full !bg-[var(--bg-pink-high)] hover:!bg-[var(--bg-pink-high)] !text-white"
             style={{ marginTop: 10 }}
           >
-            Continue with Email
+            {isSubmitting ? 'Loading...' : 'Continue with Email'}
           </Button>
         </Form>
-      </div>
+      </Card>
     </div>
   );
 };

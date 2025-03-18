@@ -87,7 +87,7 @@ const Sidebar = () => {
             key={item?.path}
             className={` !text-start !items-start !w-full button-white ${
               item?.path === location.pathname
-                ? '!bg-[var(--bg-pink-high)] !text-[var(--text-dark)]'
+                ? '!bg-[var(--bg-pink-high)] !text-[white]'
                 : '!bg-[var(--text-light)] !text-[var(--text-dark)]'
             } whitespace-nowrap links`}
           >

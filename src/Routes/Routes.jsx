@@ -13,11 +13,19 @@ import EarningManage from '../Components/Earning/EarningManage';
 import EarningPage from '../pages/DashboardPages/EarningManage/EarningPage';
 import DcoinsConverter from '../pages/DashboardPages/D-coins/DcoinsConverter';
 import CarManagement from '../pages/DashboardPages/CarManagemnet/CarManagement';
+import TermsCondition from '../pages/DashboardPages/terms&condition/TermsCondition';
+import PrivateRoute from './PrivetRoute';
+import PrivacyPolicy from '../pages/DashboardPages/privacy&policy/PrivacyPolicy';
+import Profile from '../pages/DashboardPages/ProfilePages/Profile';
 
 export const Routes = createBrowserRouter([
   {
     path: '/',
-    element: <Dashboard />,
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: '/',
@@ -49,15 +57,15 @@ export const Routes = createBrowserRouter([
       },
       {
         path: '/terms-condition',
-        element: <h1>Home</h1>,
+        element: <TermsCondition />,
       },
       {
         path: '/privacy-policy',
-        element: <h1>Home</h1>,
+        element: <PrivacyPolicy />,
       },
       {
         path: '/profile-setting',
-        element: <h1>Home</h1>,
+        element: <Profile />,
       },
       {
         path: '/faq-management',

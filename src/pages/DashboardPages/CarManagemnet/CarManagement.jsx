@@ -5,6 +5,8 @@ import Button from '../../../Components/Shared/Button';
 import { Modal } from 'antd';
 import AddNewCar from '../../../Components/page component/CarManage/AddNewCar';
 import CarManagementTable from '../../../Components/tables/CarManagetables/CarManageTable';
+import CarForm from '../../../Components/page component/CarManage/ImageUploadForm';
+import ImageUploadForm from '../../../Components/page component/CarManage/ImageUploadForm';
 
 function CarManagement() {
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +27,7 @@ function CarManagement() {
       </div>
       <CarManagementTable />
       <Modal
-        width={800}
+        width={1200}
         open={showModal}
         footer={null}
         onCancel={() => setShowModal(false)}
@@ -36,6 +38,7 @@ function CarManagement() {
         }
       >
         <AddNewCar />
+        {/* <ImageUploadForm /> */}
       </Modal>
     </div>
   );
