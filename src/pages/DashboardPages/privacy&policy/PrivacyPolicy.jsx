@@ -42,7 +42,7 @@ const PrivacyPolicy = () => {
   return (
     <>
       {/* heading and back button */}
-      <PageHeading text="Terms & Condition" />
+      <PageHeading title="Privacy Policy" />
       <JoditComponent setContent={setContent} content={content} />
 
       {/* Button to log content */}

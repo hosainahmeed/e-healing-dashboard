@@ -6,10 +6,10 @@ const baseApis = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: url,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
     },
   }),
-  tagTypes: ['profile', 'category', 'product', 'user'],
+  tagTypes: ['car', 'profile'],
   endpoints: () => ({}),
 });
 

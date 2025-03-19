@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Space, Avatar, Button, Modal, Tabs, Image } from 'antd';
+import { Table, Space, Avatar, Button, Modal, Tabs, Popconfirm } from 'antd';
 import {
   EyeOutlined,
   EditOutlined,
@@ -9,6 +9,12 @@ import {
 import { imageUrl } from '../../../Utils/server';
 import DocumentCard from '../../page component/CarManage/CarDetails/DocumentCard';
 import DriverDetailsTab from '../../page component/CarManage/CarDetails/DriverDetailsTab';
+import {
+  useDeleteCarMutation,
+  useGetAllCarsQuery,
+} from '../../../Redux/services/carApis';
+import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -48,7 +54,21 @@ const DriverInfo = ({ driver }) => {
   );
 };
 
-const ActionButtons = ({ record, onViewDetails }) => (
+const handleDeleteCar = async (carId, deleteCar) => {
+  try {
+    console.log(`Car with ID: ${carId} is being deleted.`);
+    const id = { carId };
+    const res = await deleteCar(id).unwrap();
+    console.log(res);
+    if (res.success) {
+      toast.success(res.message);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const ActionButtons = ({ record, onViewDetails, deleteCar }) => (
   <Space size="small">
     <Button
       type="primary"
@@ -57,13 +77,24 @@ const ActionButtons = ({ record, onViewDetails }) => (
       onClick={() => onViewDetails(record)}
       className="bg-blue-400 hover:bg-blue-500"
     />
-    <Button
-      type="primary"
-      shape="circle"
-      icon={<EditOutlined />}
-      className="bg-green-400 hover:bg-green-500"
-    />
-    <Button danger shape="circle" icon={<DeleteOutlined />} />
+    <Link to={`/car-management/edit-car/${record._id}`} state={record._id}>
+      <Button
+        type="primary"
+        shape="circle"
+        icon={<EditOutlined />}
+        className="bg-green-400 hover:bg-green-500"
+      />
+    </Link>
+    <Popconfirm
+      placement="topRight"
+      title={'Are you sure you want to delete this car?'}
+      description={'This action cannot be undone.'}
+      okText="Yes"
+      cancelText="No"
+      onConfirm={() => handleDeleteCar(record._id, deleteCar)}
+    >
+      <Button danger shape="circle" icon={<DeleteOutlined />} />
+    </Popconfirm>
   </Space>
 );
 
@@ -94,11 +125,9 @@ const ImageThumbnails = ({ images, activeIndex, onSelect }) => (
   </div>
 );
 
-// Tab components
 const CarDetailsTab = ({ car }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  // Define details to display
   const details = [
     { label: 'Car Brand', value: car.brand },
     { label: 'Car Model', value: car.model },
@@ -114,7 +143,6 @@ const CarDetailsTab = ({ car }) => {
     },
   ];
 
-  // Add driver information if available
   if (car.assignedDriver) {
     details.push({
       label: 'Assigned Driver',
@@ -172,7 +200,7 @@ const DocumentsTab = ({ car }) => (
         All official documents related to this vehicle
       </p>
 
-      <div className="">
+      <div>
         <DocumentCard title="Vehicle Grant" imageSrc={car.car_grant_image} />
         <DocumentCard
           title="Vehicle Insurance"
@@ -187,19 +215,16 @@ const DocumentsTab = ({ car }) => (
   </div>
 );
 
-
-
-// Main component
-const CarManagementTable = ({ carsData = [] }) => {
+const CarManagementTable = () => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
+  const [deleteCar, { isLoading: deletingCar }] = useDeleteCarMutation();
 
   const handleViewDetails = (car) => {
     setSelectedCar(car);
     setDetailModalVisible(true);
   };
 
-  // Table columns configuration
   const columns = [
     {
       title: 'Car Image',
@@ -239,94 +264,21 @@ const CarManagementTable = ({ carsData = [] }) => {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <ActionButtons record={record} onViewDetails={handleViewDetails} />
+        <ActionButtons
+          record={record}
+          onViewDetails={handleViewDetails}
+          deleteCar={deleteCar}
+          loading={deletingCar}
+        />
       ),
     },
   ];
 
-  // Sample data (you would replace this with real data)
-  const sampleCars = [
-    {
-      _id: '67d8eab88d36243e1e860794',
-      brand: 'Toyota',
-      model: 'Camry',
-      type: 'Sedan',
-      seats: 5,
-      evpNumber: 'EVP123456',
-      evpExpiry: '2025-08-30',
-      carNumber: 'XYZ-9876',
-      color: 'Black',
-      carLicensePlate: 'AB123CD',
-      vin: '1HGCM82633A123456',
-      insuranceStatus: 'active',
-      registrationDate: '2023-06-15',
-      car_image: [
-        'https://m.atcdn.co.uk/ect/media/%7Bresize%7D/4b14ab0c7868451baf5912779f112f40.jpg',
-        'https://m.atcdn.co.uk/ect/media/%7Bresize%7D/4b14ab0c7868451baf5912779f112f40.jpg',
-        'https://m.atcdn.co.uk/ect/media/%7Bresize%7D/4b14ab0c7868451baf5912779f112f40.jpg',
-      ],
-      car_grant_image:
-        'https://m.atcdn.co.uk/ect/media/%7Bresize%7D/4b14ab0c7868451baf5912779f112f40.jpg',
-      car_insurance_image:
-        'https://m.atcdn.co.uk/ect/media/%7Bresize%7D/4b14ab0c7868451baf5912779f112f40.jpg',
-      e_hailing_car_permit_image:
-        'https://m.atcdn.co.uk/ect/media/%7Bresize%7D/4b14ab0c7868451baf5912779f112f40.jpg',
-      isAssigned: false,
-      createdAt: '2025-03-18T03:38:32.673Z',
-      updatedAt: '2025-03-18T03:38:32.673Z',
-    },
-    {
-      _id: '67d3fca0801c924150e0ec01',
-      brand: 'Prius',
-      model: 'Plus',
-      type: 'Premium',
-      seats: 5,
-      evpNumber: 'EVP123456',
-      evpExpiry: '2025-08-30',
-      carNumber: 'XYZ-9876',
-      color: 'Silver',
-      carLicensePlate: 'AB123CD',
-      vin: '1HGCM82633A123456',
-      insuranceStatus: 'active',
-      registrationDate: '2023-06-15',
-      car_image: [
-        'uploads\\car_image\\1741946016251-black-luxury-jeep-min.jpg',
-        'uploads\\car_image\\1741946016268-modern-luxury-white-car-min.jpg',
-        'uploads\\car_image\\1741946016289-white-offroader-jeep-min.jpg',
-      ],
-      car_grant_image: 'uploads\\car_grant_image\\1741946016313-car-grant.png',
-      car_insurance_image:
-        'uploads\\car_insurance_image\\1741946016314-car-insurance.png',
-      e_hailing_car_permit_image:
-        'uploads\\e_hailing_car_permit_image\\1741946016315-car-insurance.png',
-      isAssigned: true,
-      createdAt: '2025-03-14T09:53:36.365Z',
-      updatedAt: '2025-03-18T03:20:43.827Z',
-      assignedDriver: {
-        _id: '67d3bc8b3c618cb4557d1def',
-        authId: '67d3bc8b3c618cb4557d1ded',
-        name: 'Lucifer',
-        email: 'thakursaad613@gmail.com',
-        profile_image: 'uploads\\profile_image\\1741929611240-hae-in.png',
-        phoneNumber: '+1234567890',
-        address: '123 Main Street, City, Country',
-        isOnline: false,
-        idOrPassportNo: 'A123456789',
-        drivingLicenseNo: 'DL123456789',
-        licenseType: 'Commercial',
-        licenseExpiry: '2025-12-31',
-        id_or_passport_image:
-          'uploads\\id_or_passport_image\\1741929611255-image.png',
-        psv_license_image:
-          'uploads\\psv_license_image\\1741929611258-image.png',
-        driving_license_image:
-          'uploads\\driving_license_image\\1741929611261-image.png',
-        userAccountStatus: 'verified',
-        role: 'DRIVER',
-        assignedCar: '67d3fca0801c924150e0ec01',
-      },
-    },
-  ];
+  const { data: carsData, isLoading: carsDataLoading } = useGetAllCarsQuery();
+
+  if (!carsDataLoading && carsData?.data?.cars) {
+    console.log(carsData.data.cars);
+  }
 
   const getTabItems = (car) => {
     const tabs = [
@@ -354,8 +306,9 @@ const CarManagementTable = ({ carsData = [] }) => {
     <div className="w-full overflow-x-auto">
       <Table
         columns={columns}
-        dataSource={carsData.length > 0 ? carsData : sampleCars}
+        dataSource={carsData?.data?.cars}
         rowKey="_id"
+        loading={carsDataLoading}
         pagination={{ pageSize: 10 }}
       />
 

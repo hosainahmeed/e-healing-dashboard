@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import { Button, notification } from "antd";
-import JoditComponent from "../../Components/Shared/JoditComponent.jsx";
-import PageHeading from "../../../Components/Shared/PageHeading.jsx";
+import React, { useState } from 'react';
+import { Button, notification } from 'antd';
+import JoditComponent from '../../Components/Shared/JoditComponent.jsx';
+import PageHeading from '../../../Components/Shared/PageHeading.jsx';
 // import {
 //   useGetConditionsQuery,
 //   usePostConditionsMutation,
 // } from "../../Redux/api/termsConditionsApis";
 
 const TermsCondition = () => {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   //   const { data, isLoading } = useGetConditionsQuery({});
   //   const [setDescription, { isLoading: isSubmitting }] =
   //     usePostConditionsMutation();
@@ -24,13 +24,13 @@ const TermsCondition = () => {
     try {
       //   await setDescription({ description: content }).unwrap();
       notification.success({
-        message: "Success",
-        description: "Terms & Conditions updated successfully!",
+        message: 'Success',
+        description: 'Terms & Conditions updated successfully!',
       });
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to update Terms & Conditions. Please try again.",
+        message: 'Error',
+        description: 'Failed to update Terms & Conditions. Please try again.',
       });
     }
   };
@@ -42,7 +42,7 @@ const TermsCondition = () => {
   return (
     <>
       {/* heading and back button */}
-      <PageHeading text="Terms & Condition" />
+      <PageHeading title="Terms & Condition" />
       <JoditComponent setContent={setContent} content={content} />
 
       {/* Button to log content */}
@@ -50,9 +50,9 @@ const TermsCondition = () => {
         onClick={handleLogContent}
         // disabled={isSubmitting}
         style={{
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "10px",
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '10px',
         }}
         className="max-w-48 sidebar-button-black"
       >

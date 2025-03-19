@@ -1,23 +1,32 @@
-import React from "react";
-import { Form, Upload, message } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import React from 'react';
+import { Form, Upload, message } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
 
 const { Dragger } = Upload;
 
 const AddCarDocument = ({ form }) => {
-  const uploadProps = {
+  const getUploadProps = (fieldName) => ({
     beforeUpload: () => false,
     maxCount: 1,
-    accept: ".pdf,.jpg,.jpeg,.png",
-    onRemove: () => {
-      message.info("File removed");
+    accept: '.pdf,.jpg,.jpeg,.png',
+    onChange: (info) => {
+      const { fileList } = info;
+      if (fileList.length > 0) {
+        fileList[0].originFileObj;
+        const fieldValue = { fileList };
+        form.setFieldsValue({ [fieldName]: fieldValue });
+      }
     },
-  };
+    onRemove: () => {
+      form.setFieldsValue({ [fieldName]: undefined });
+      message.info('File removed');
+    },
+  });
 
   return (
     <div>
       <h3 className="text-lg font-medium mb-4">Vehicle Documents</h3>
-      <Form layout="vertical">
+      <Form layout="vertical" form={form}>
         <div className="space-y-6">
           <Form.Item
             name="car_grant_image"
@@ -25,11 +34,11 @@ const AddCarDocument = ({ form }) => {
             rules={[
               {
                 required: true,
-                message: "Please upload the vehicle grant document",
+                message: 'Please upload the vehicle grant document',
               },
             ]}
           >
-            <Dragger {...uploadProps}>
+            <Dragger {...getUploadProps('car_grant_image')}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
@@ -48,11 +57,11 @@ const AddCarDocument = ({ form }) => {
             rules={[
               {
                 required: true,
-                message: "Please upload the insurance certificate",
+                message: 'Please upload the insurance certificate',
               },
             ]}
           >
-            <Dragger {...uploadProps}>
+            <Dragger {...getUploadProps('car_insurance_image')}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
@@ -71,11 +80,11 @@ const AddCarDocument = ({ form }) => {
             rules={[
               {
                 required: true,
-                message: "Please upload the e-hailing car permit",
+                message: 'Please upload the e-hailing car permit',
               },
             ]}
           >
-            <Dragger {...uploadProps}>
+            <Dragger {...getUploadProps('e_hailing_car_permit_image')}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
