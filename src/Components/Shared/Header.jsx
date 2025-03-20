@@ -1,13 +1,17 @@
 import React from 'react';
-import { Avatar, Dropdown, Menu } from 'antd';
+import { Avatar, Dropdown, Image, Menu } from 'antd';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
 import logo from '../../assets/icons/DUDU.svg';
+import { useGetProfileDataQuery } from '../../Redux/services/profileApis';
+import { imageUrl } from '../../Utils/server';
 function Header() {
+  const { data: profileData, isLoading } = useGetProfileDataQuery({});
+  console.log(profileData);
   const user = {
-    photoURL: 'https://cdn-icons-png.flaticon.com/512/219/219988.png',
-    displayName: 'Micheal Scott',
-    email: 'Micheal46@gmail.com',
+    photoURL: imageUrl(profileData?.data?.profile_image),
+    displayName: profileData?.data?.name,
+    email: profileData?.data?.email,
   };
 
   const handleSignOut = () => {
@@ -18,7 +22,7 @@ function Header() {
   const menu = (
     <Menu className="w-fit rounded-xl shadow-lg">
       <div className="p-4 flex items-center gap-3">
-        <Avatar size={48} src={user?.photoURL} />
+        <Image className='!w-12 !h-12 object-cover overflow-hidden rounded-full' src={user?.photoURL} />
         <div>
           <h1 className="font-semibold text-base">{user?.displayName}</h1>
           <h1 className="font-normal opacity-75 text-sm">{user?.email}</h1>
@@ -26,7 +30,7 @@ function Header() {
       </div>
       <Menu.Divider />
       <Menu.Item key="1" icon={<UserOutlined />}>
-        <Link to="/privacy-policy">Profile</Link>
+        <Link to="/profile-setting">Profile</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="4" icon={<LogoutOutlined />} onClick={handleSignOut}>

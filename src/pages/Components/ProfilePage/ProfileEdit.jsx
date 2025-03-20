@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { Button, Form, message, Spin } from 'antd';
-// import { useUpdateProfileDataMutation } from '../../Redux/services/profileApis';
+import React from 'react';
+import { Button, Form, Spin } from 'antd';
 import toast from 'react-hot-toast';
+import { useUpdateProfileDataMutation } from '../../../Redux/services/profileApis';
 
-const ProfileEdit = ({ image, defaultImage, data }) => {
+const ProfileEdit = ({ image, data }) => {
   const [form] = Form.useForm();
-  // const [setProfileUpdate, { isLoading: isProfileUpdate }] =
-  //   useUpdateProfileDataMutation();
+  const [setProfileUpdate, { isLoading: isProfileUpdate }] =
+    useUpdateProfileDataMutation();
   const onFinish = async (values) => {
+    console.log(values);
     const updateData = {
       name: values?.name,
-      phone: values?.phoneNumber,
+      phoneNumber: values?.phoneNumber,
     };
     console.log(updateData);
     const formData = new FormData();
@@ -19,21 +20,21 @@ const ProfileEdit = ({ image, defaultImage, data }) => {
     });
 
     if (image === null) {
-      formData.delete('img', image);
-    }else{
-      formData.append('img', image);
+      formData.delete('profile_image', image);
+    } else {
+      formData.append('profile_image', image);
     }
 
-    // try {
-    //   // const res = await setProfileUpdate(formData);
-    //   if (res?.data?.success) {
-    //     toast.success(res?.data?.message || 'Profile updated successfully');
-    //   }
-    // } catch (error) {
-    //   console.error('Failed to update profile:', error);
-    // }
+    try {
+      const res = await setProfileUpdate(formData);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message || 'Profile updated successfully');
+      }
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+    }
   };
-
+  console.log(data);
   return (
     <div>
       <p className="text-[#3872F0] text-3xl text-center">Edit Profile</p>
@@ -46,7 +47,7 @@ const ProfileEdit = ({ image, defaultImage, data }) => {
         initialValues={{
           name: data.name || '',
           email: data.email || '',
-          phoneNumber: data.phone || '',
+          phoneNumber: data.phoneNumber || '',
         }}
       >
         <Form.Item
@@ -113,10 +114,10 @@ const ProfileEdit = ({ image, defaultImage, data }) => {
         <Button
           type="primary"
           htmlType="submit"
-          // disabled={isProfileUpdate}
+          disabled={isProfileUpdate}
           className="!bg-[#3872F0] !hover:bg-[#3872F0] active:bg-[#3872F0] w-full"
         >
-          {/* {isProfileUpdate ? <Spin /> : 'Update Profile'} */} UPdate profile
+          {isProfileUpdate ? <Spin /> : 'Update Profile'}
         </Button>
       </Form>
     </div>

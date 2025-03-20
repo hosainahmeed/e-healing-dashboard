@@ -3,28 +3,28 @@ import { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import ProfileEdit from '../../Components/ProfilePage/ProfileEdit.jsx';
 import ChangePassword from '../../Components/ProfilePage/ChangePassword.jsx';
-import { Button, Spin } from 'antd';
-// import { useGetProfileDataQuery } from '../../Redux/services/profileApis.js';
-// import { imageUrl } from '../../../Utils/server.js';
+import { Button } from 'antd';
+import { useGetProfileDataQuery } from '../../../Redux/services/profileApis.js';
+import { imageUrl } from '../../../Utils/server.js';
 
 const Tabs = ['Edit Profile', 'Change Password'];
 
 const Profile = () => {
   const [tab, setTab] = useState(Tabs[0]);
-  // const { data: profileData, isLoading } = useGetProfileDataQuery({});
-  // const [image, setImage] = useState(null);
-  // const handleImageUpload = (e) => {
-  //   if (e.target.files?.[0]) {
-  //     setImage(e.target.files[0]);
-  //     localStorage.setItem('image', e.target.files[0]);
-  //   }
-  // };
-
-  // const profileImage = image
-  //   ? URL.createObjectURL(image)
-  //   : profileData?.data?.img
-  //   ? imageUrl(profileData.data.img)
-  //   : 'https://placehold.co/400';
+  const { data: profileData, isLoading } = useGetProfileDataQuery({});
+  const [image, setImage] = useState(null);
+  const handleImageUpload = (e) => {
+    if (e.target.files?.[0]) {
+      setImage(e.target.files[0]);
+      localStorage.setItem('image', e.target.files[0]);
+    }
+  };
+  console.log(profileData);
+  const profileImage = image
+    ? URL.createObjectURL(image)
+    : profileData?.data?.profile_image
+    ? imageUrl(profileData.data.profile_image)
+    : 'https://placehold.co/400';
 
   return (
     <>
@@ -40,7 +40,7 @@ const Profile = () => {
           >
             <img
               className="w-full h-full object-cover rounded-full"
-              // src={profileImage}
+              src={profileImage}
               alt="Profile"
             />
             {tab === 'Edit Profile' && (
@@ -56,13 +56,13 @@ const Profile = () => {
               id="fileInput"
               type="file"
               accept="image/*"
-              // onChange={handleImageUpload}
+              onChange={handleImageUpload}
               style={{ display: 'none' }}
             />
           </div>
         </div>
         <p className="text-2xl text-center text-black mt-2">
-          {/* {profileData?.data?.name || 'User Name'} */}
+          {profileData?.data?.name || 'User Name'}
         </p>
       </div>
 
@@ -85,7 +85,7 @@ const Profile = () => {
       </div>
 
       <div className="max-w-[700px] mx-auto bg-[var(--black-200)] p-4 rounded-md">
-        {/* {tab === 'Edit Profile' ? (
+        {tab === 'Edit Profile' ? (
           isLoading ? (
             <span className="loader-black"></span>
           ) : (
@@ -97,8 +97,7 @@ const Profile = () => {
           )
         ) : (
           <ChangePassword />
-        )} */}
-        Submit
+        )}
       </div>
     </>
   );
