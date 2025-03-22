@@ -53,12 +53,7 @@ const AddCarLicenseInfo = ({ form }) => {
               { required: true, message: 'Please enter number of seats' },
             ]}
           >
-            <InputNumber
-              min={1}
-              max={20}
-              placeholder="E.g., 5"
-              style={{ width: '100%' }}
-            />
+            <InputNumber placeholder="E.g., 5" style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item
