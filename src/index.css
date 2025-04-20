@@ -223,27 +223,27 @@ body {
   padding: 40px;
   text-align: center;
 }
-.user-unverified .ant-select-selector{
-background-color: #FFCCCC !important;
-color: red !important;
+.user-unverified .ant-select-selector {
+  background-color: #ffcccc !important;
+  color: red !important;
 }
-.user-verified .ant-select-selector{
-background-color: #CCF0EB !important;
-color: #00B69B !important;
+.user-verified .ant-select-selector {
+  background-color: #ccf0eb !important;
+  color: #00b69b !important;
 }
-.ant-pagination{
+.ant-pagination {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   margin-top: 20px !important;
 }
-.ant-pagination-item-link{
+.ant-pagination-item-link {
   border-radius: 100% !important;
   background-color: white !important;
   color: #111 !important;
 }
-.ant-pagination-item-active{
-  background-color: #9333EA !important;
+.ant-pagination-item-active {
+  background-color: #9333ea !important;
   color: white !important;
 }
 .car_upload .ant-upload {

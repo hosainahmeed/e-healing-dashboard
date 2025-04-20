@@ -109,7 +109,6 @@ const RecentlyJoinedUsers = () => {
         dataSource={users}
         rowKey="id"
         pagination={false}
-        bordered
       />
       <Modal
         centered
