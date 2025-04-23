@@ -1,43 +1,50 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { Button, notification } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button } from 'antd';
 import JoditComponent from '../../Components/Shared/JoditComponent.jsx';
 import PageHeading from '../../../Components/Shared/PageHeading.jsx';
-// import {
-//   useGetConditionsQuery,
-//   usePostConditionsMutation,
-// } from "../../Redux/api/termsConditionsApis";
+import {
+  useGetPrivacyPolicyQuery,
+  useUpdatePrivacyPolicyMutation,
+} from '../../../Redux/services/settings/privacyPolicyApis.js';
 
 const PrivacyPolicy = () => {
   const [content, setContent] = useState('');
-  //   const { data, isLoading } = useGetConditionsQuery({});
-  //   const [setDescription, { isLoading: isSubmitting }] =
-  //     usePostConditionsMutation();
+  const { data, isLoading } = useGetPrivacyPolicyQuery({});
+  const [setDescription, { isLoading: isSubmitting }] =
+    useUpdatePrivacyPolicyMutation();
 
-  //   useEffect(() => {
-  //     if (data?.data?.description) {
-  //       setContent(data.data.description);
-  //     }
-  //   }, [data]);
+  useEffect(() => {
+    if (data?.data?.description) {
+      setContent(data?.data?.description);
+    }
+  }, [data]);
 
   const handleLogContent = async () => {
     try {
-      //   await setDescription({ description: content }).unwrap();
-      notification.success({
-        message: 'Success',
-        description: 'Terms & Conditions updated successfully!',
-      });
+      await setDescription({ description: content }).unwrap();
     } catch (error) {
-      notification.error({
-        message: 'Error',
-        description: 'Failed to update Terms & Conditions. Please try again.',
-      });
+      console.log(error);
     }
   };
 
-  //   if (isLoading) {
-  //     return <p>..loading</p>;
-  //   }
+
+  if (isLoading) {
+    return (
+      <div>
+        <div className="w-48 h-6 mb-3 rounded-md animate-pulse bg-gray-200"></div>
+        <div className="w-full p-3 flex flex-col gap-2 min-h-[600px] animate-pulse rounded-md bg-gray-200">
+          {Array.from({ length: 22 }).map((_, x) => (
+            <div
+              key={x}
+              className="bg-gray-500 h-3 w-full animate-pulse"
+              
+            ></div>
+          ))}
+        </div>
+        <div className="w-32 h-8 mt-3 rounded-md animate-pulse bg-gray-200"></div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -48,7 +55,7 @@ const PrivacyPolicy = () => {
       {/* Button to log content */}
       <Button
         onClick={handleLogContent}
-        // disabled={isSubmitting}
+        disabled={isSubmitting}
         style={{
           justifyContent: 'center',
           alignItems: 'center',
@@ -56,8 +63,7 @@ const PrivacyPolicy = () => {
         }}
         className="max-w-48 sidebar-button-black"
       >
-        {/* {isSubmitting ? "Submitting..." : "Submit"} */}
-        Submit
+        {isSubmitting ? 'Submitting...' : 'Submit'}
       </Button>
     </>
   );

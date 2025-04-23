@@ -1,9 +1,11 @@
-import React, { useMemo, useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import JoditEditor from 'jodit-react';
+
 const JoditComponent = ({ content, setContent }) => {
   const editor = useRef(null);
-  const editorComponent = useMemo(() => {
-    return (
+
+  return (
+    <div>
       <JoditEditor
         ref={editor}
         value={content}
@@ -14,9 +16,8 @@ const JoditComponent = ({ content, setContent }) => {
           minHeight: 600,
         }}
       />
-    );
-  }, []);
-  return <div className="mt-6 ">{editorComponent}</div>;
+    </div>
+  );
 };
 
-export default JoditComponent;
+export default memo(JoditComponent);

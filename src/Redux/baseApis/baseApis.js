@@ -9,7 +9,7 @@ const baseApis = createApi({
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
     },
   }),
-  tagTypes: ['car', 'profile'],
+  tagTypes: ['car', 'profile', 'privacyPolicy', 'termsAndConditions'],
   endpoints: () => ({}),
 });
 

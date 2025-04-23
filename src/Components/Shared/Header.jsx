@@ -7,7 +7,7 @@ import { useGetProfileDataQuery } from '../../Redux/services/profileApis';
 import { imageUrl } from '../../Utils/server';
 function Header() {
   const { data: profileData, isLoading } = useGetProfileDataQuery({});
-  console.log(profileData);
+
   const user = {
     photoURL: imageUrl(profileData?.data?.profile_image),
     displayName: profileData?.data?.name,
@@ -22,7 +22,10 @@ function Header() {
   const menu = (
     <Menu className="w-fit rounded-xl shadow-lg">
       <div className="p-4 flex items-center gap-3">
-        <Image className='!w-12 !h-12 object-cover overflow-hidden rounded-full' src={user?.photoURL} />
+        <Image
+          className="!w-12 !h-12 object-cover overflow-hidden rounded-full"
+          src={user?.photoURL}
+        />
         <div>
           <h1 className="font-semibold text-base">{user?.displayName}</h1>
           <h1 className="font-normal opacity-75 text-sm">{user?.email}</h1>
