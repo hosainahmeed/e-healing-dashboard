@@ -10,10 +10,10 @@ const termsAndConditionsApis = baseApis.injectEndpoints({
       providesTags: ['termsAndConditions'],
     }),
     updateTermsAndConditions: builder.mutation({
-      query: (body) => ({
+      query: ({ requestData }) => ({
         url: '/manage/add-terms-conditions',
         method: 'POST',
-        body,
+        body: requestData,
       }),
       invalidatesTags: ['termsAndConditions'],
     }),

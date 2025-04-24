@@ -1,40 +1,40 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Button, notification } from 'antd';
+import { Button } from 'antd';
 import JoditComponent from '../../Components/Shared/JoditComponent.jsx';
 import PageHeading from '../../../Components/Shared/PageHeading.jsx';
 import {
   useGetTermsAndConditionsQuery,
   useUpdateTermsAndConditionsMutation,
 } from '../../../Redux/services/settings/termsAndConditionsApis.js';
+import toast from 'react-hot-toast';
 
 const TermsCondition = () => {
   const [content, setContent] = useState('');
   const { data, isLoading } = useGetTermsAndConditionsQuery({});
   const [setDescription, { isLoading: isSubmitting }] =
     useUpdateTermsAndConditionsMutation();
-
+  console.log(data?.data?.description);
   useEffect(() => {
     if (data?.data?.description) {
-      setContent(data.data.description);
+      setContent(data?.data?.description);
     }
   }, [data]);
 
-  const handleLogContent = async () => {
+  const updateTerms = async () => {
     try {
-      await setDescription({ description: content }).unwrap();
-      notification.success({
-        message: 'Success',
-        description: 'Terms & Conditions updated successfully!',
-      });
+      const requestData = {
+        description: content,
+      };
+
+      const res = await setDescription({ requestData }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message || 'Terms and conditions updated successfully !');
+      }
     } catch (error) {
-      notification.error({
-        message: 'Error',
-        description: 'Failed to update Terms & Conditions. Please try again.',
-      });
+      console.log(error);
     }
   };
-
   if (isLoading) {
     return (
       <div>
@@ -48,7 +48,7 @@ const TermsCondition = () => {
       </div>
     );
   }
-
+  console.log(content, 'asdlas');
   return (
     <>
       {/* heading and back button */}
@@ -57,7 +57,7 @@ const TermsCondition = () => {
 
       {/* Button to log content */}
       <Button
-        onClick={handleLogContent}
+        onClick={updateTerms}
         disabled={isSubmitting}
         style={{
           justifyContent: 'center',
