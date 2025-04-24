@@ -14,7 +14,6 @@ const TermsCondition = () => {
   const { data, isLoading } = useGetTermsAndConditionsQuery({});
   const [setDescription, { isLoading: isSubmitting }] =
     useUpdateTermsAndConditionsMutation();
-  console.log(data?.data?.description);
   useEffect(() => {
     if (data?.data?.description) {
       setContent(data?.data?.description);
@@ -29,7 +28,9 @@ const TermsCondition = () => {
 
       const res = await setDescription({ requestData }).unwrap();
       if (res?.success) {
-        toast.success(res?.message || 'Terms and conditions updated successfully !');
+        toast.success(
+          res?.message || 'Terms and conditions updated successfully !'
+        );
       }
     } catch (error) {
       console.log(error);
@@ -48,7 +49,7 @@ const TermsCondition = () => {
       </div>
     );
   }
-  console.log(content, 'asdlas');
+
   return (
     <>
       {/* heading and back button */}

@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { url } from '../../Utils/server';
 
 const baseApis = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: url,
+    baseUrl: import.meta.env.VITE_API_URL,
     headers: {
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
     },

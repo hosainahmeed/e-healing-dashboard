@@ -23,7 +23,7 @@ function AddNewCar() {
   const [addNewCar] = useCreateNewCarMutation();
   const { data: singleCarData, isLoading: singleCarLoading } =
     useGetSingleCardDataQuery({ id });
-  console.log(singleCarData?.data?.car_image);
+
   const [imageData, setImageData] = useState({
     car_image: [],
   });
@@ -131,13 +131,9 @@ function AddNewCar() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-
       const values = await form.validateFields();
-
       setDocumentInfo((prevData) => ({ ...prevData, ...values }));
-
       const submitFormData = new FormData();
-
       const allData = {
         ...generalInfo,
 
