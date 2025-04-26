@@ -36,7 +36,7 @@ const PrivacyPolicy = () => {
           {Array.from({ length: 22 }).map((_, x) => (
             <div
               key={x}
-              className="bg-gray-500 h-3 w-full animate-pulse"
+              className="bg-gray-300 h-3 w-full animate-pulse"
               
             ></div>
           ))}

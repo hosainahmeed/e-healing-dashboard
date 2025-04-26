@@ -6,21 +6,25 @@ import userIcon from '../../../assets/icons/userIcon.svg';
 import GrowthChart from '../../../Components/charts/UserGrowthChart';
 import ActivityChart from '../../../Components/charts/ActivityChart';
 import RecentlyJoinedUsers from '../../../Components/tables/User/RecentlyJoinedUsers';
+import { useGetTotalOverviewQuery } from '../../../Redux/services/dashboard apis/total-overview/totalOverviewApis';
+import Loader from '../../../Components/Shared/Loader';
 function DashboardHome() {
+  const { data, isLoading } = useGetTotalOverviewQuery();
+  console.log(data?.data);
   const cardData = [
     {
       title: 'Total Drivers',
-      value: '75',
+      value: isLoading ? <Loader /> : Number(data?.data?.totalDriver) || 0,
       icon: <img src={driverIcon} alt="" />,
     },
     {
       title: 'Total Users',
-      value: '1576',
+      value: isLoading ? <Loader /> : Number(data?.data?.totalUser) || 0,
       icon: <img src={userIcon} alt="" />,
     },
     {
       title: 'Total Cars',
-      value: '40',
+      value: isLoading ? <Loader /> : Number(data?.data?.totalCars) || 0,
       icon: <img src={carIcon} alt="" />,
     },
   ];

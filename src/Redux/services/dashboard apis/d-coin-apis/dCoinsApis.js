@@ -1,4 +1,4 @@
-import baseApis from '../../baseApis/baseApis';
+import baseApis from '../../../baseApis/baseApis';
 
 const dCoinsApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({

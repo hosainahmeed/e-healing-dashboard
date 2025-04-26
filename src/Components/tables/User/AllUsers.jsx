@@ -1,96 +1,46 @@
 import React, { useState } from 'react';
-import { Table, Tag, Space, Avatar, Button, Modal, Select } from 'antd';
+import { Table, Tag, Space, Avatar, Button, Modal, Select, message } from 'antd';
 import { UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { CgBlock } from 'react-icons/cg';
 import { IoIosWarning } from 'react-icons/io';
+import { 
+  useGetAllUserOrDriverQuery,
+  useUpdateUserStatusMutation 
+} from '../../../Redux/services/dashboard apis/userApis/userApis';
 
 const AllUsers = () => {
   const [showModal, setShowModal] = useState(false);
   const [blockUserId, setBlockUserId] = useState(null);
-  console.log(blockUserId);
-  const users = [
-    {
-      id: 1,
-      name: 'Theodore Mosciski',
-      contactNumber: '901-474-6265',
-      email: 'maka@yandex.ru',
-      joined: '2025-01-10',
-      status: 'verified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 2,
-      name: 'Russell Veum',
-      contactNumber: '983-842-7095',
-      email: 'Nigel16@hotmail.com',
-      joined: '2025-01-10',
-      status: 'Unverified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 3,
-      name: 'Tracy Grady',
-      contactNumber: '564-667-5097',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Unverified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 44444444444444,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'verified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 43333333333,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'verified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 4333333,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'verified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 4333,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'verified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 433,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'verified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 43,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'verified',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-  ];
+  const params = { role: 'USER' };
+  const { data: userData, isLoading: userDataLoading, refetch } = useGetAllUserOrDriverQuery({ params });
+  const [updateUserStatus] = useUpdateUserStatusMutation();
+
+  const handleStatusChange = async (userId, newStatus) => {
+    try {
+      await updateUserStatus({ 
+        userId, 
+        status: newStatus 
+      }).unwrap();
+      message.success('User status updated successfully');
+      refetch();
+    } catch (error) {
+      message.error('Failed to update user status');
+      console.error('Update error:', error);
+    }
+  };
+
+  const users = userData?.data?.result?.map((user) => ({
+    key: user._id,
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    contactNumber: user.phoneNumber,
+    isOnline: user.isOnline,
+    status: user.userAccountStatus,
+    joined: new Date(user.createdAt).toLocaleDateString(),
+    avatar: null,
+  }));
 
   const columns = [
     {
@@ -99,7 +49,7 @@ const AllUsers = () => {
       key: 'name',
       render: (text, record) => (
         <Space size="middle">
-          <Avatar src={record.avatar} />
+          <Avatar icon={<UserOutlined />} src={record.avatar} />
           {text}
         </Space>
       ),
@@ -108,6 +58,12 @@ const AllUsers = () => {
       title: 'Contact Number',
       dataIndex: 'contactNumber',
       key: 'contactNumber',
+      render: (phone) => (
+        <Space>
+          <PhoneOutlined />
+          {phone}
+        </Space>
+      ),
     },
     {
       title: 'Email',
@@ -123,12 +79,11 @@ const AllUsers = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (status) => (
+      render: (status, record) => (
         <Select
-          className={`w-full ${
-            status === 'verified' ? 'user-verified' : 'user-unverified'
-          }`}
           defaultValue={status}
+          style={{ width: 120 }}
+          onChange={(value) => handleStatusChange(record.id, value)}
         >
           <Select.Option value="verified">Verified</Select.Option>
           <Select.Option value="unverified">Unverified</Select.Option>
@@ -157,16 +112,31 @@ const AllUsers = () => {
     },
   ];
 
+  const handleBlockUser = async () => {
+    try {
+      // Add your block user mutation here
+      // await blockUserMutation(blockUserId).unwrap();
+      message.success('User blocked successfully');
+      refetch();
+      setShowModal(false);
+    } catch (error) {
+      message.error('Failed to block user');
+      console.error('Block error:', error);
+    }
+  };
+
   return (
     <div className="w-full overflow-x-auto">
       <Table
+        loading={userDataLoading}
         columns={columns}
         dataSource={users}
         rowKey="id"
         pagination={
-          users.length > 5
+          userData?.data?.meta?.total > 5
             ? {
-                defaultPageSize: 5,
+                pageSize: userData?.data?.meta?.limit,
+                total: userData?.data?.meta?.total,
                 showSizeChanger: false,
               }
             : false
@@ -189,9 +159,11 @@ const AllUsers = () => {
             <Button
               type="primary"
               className="!bg-[var(--bg-pink-high)] !text-white"
+              onClick={handleBlockUser}
             >
               Yes
             </Button>
+            <Button onClick={() => setShowModal(false)}>Cancel</Button>
           </div>
         </div>
       </Modal>

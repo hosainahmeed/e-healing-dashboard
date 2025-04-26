@@ -2,7 +2,7 @@ import { Button } from 'antd';
 import React from 'react';
 
 function General({ data }) {
-  console.log(data);
+  
   return (
     <div>
       <h1 className="text-base text-[#222]]">

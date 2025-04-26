@@ -5,95 +5,50 @@ import { CgBlock } from 'react-icons/cg';
 import { IoIosMail, IoIosWarning } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import DriverInfotmation from '../../page component/DriverInfotmation';
+import { useGetAllUserOrDriverQuery } from '../../../Redux/services/dashboard apis/userApis/userApis';
+import { imageUrl } from '../../../Utils/server';
 
 const DriverTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDriverModal, setShowDriverModal] = useState(false);
   const [blockUserId, setBlockUserId] = useState(null);
-  console.log(blockUserId);
-  const users = [
-    {
-      id: 1,
-      name: 'Theodore Mosciski',
-      contactNumber: '901-474-6265',
-      email: 'maka@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Active',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 2,
-      name: 'Russell Veum',
-      contactNumber: '983-842-7095',
-      email: 'Nigel16@hotmail.com',
-      joined: '2025-01-10',
-      status: 'Inactive',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 3,
-      name: 'Tracy Grady',
-      contactNumber: '564-667-5097',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Inactive',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 44444444444444,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Active',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 43333333333,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Active',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 4333333,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Active',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 4333,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Active',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 433,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Active',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-    {
-      id: 43,
-      name: 'Dana Daniel',
-      contactNumber: '443-393-4346',
-      email: 'rrian@yandex.ru',
-      joined: '2025-01-10',
-      status: 'Active',
-      avatar: `https://tinypng.com/images/social/website.jpg`,
-    },
-  ];
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+  });
+  const roleData = {
+    role: 'DRIVER',
+  };
+  const { data: driverData, isLoading: driverDataLoading } =
+    useGetAllUserOrDriverQuery({
+      params: roleData,
+      page: pagination.current,
+      limit: pagination.pageSize,
+    });
+
+  const handleTableChange = (pagination) => {
+    setPagination(pagination);
+  };
+  console.log(driverData);
+  const drivers = driverData?.data?.result?.map((driver) => ({
+    id: driver?._id,
+    key: driver?._id,
+    name: driver?.name,
+    email: driver?.email,
+    contactNumber: driver?.phoneNumber,
+    joined: new Date(driver.createdAt).toLocaleDateString(),
+    status: driver?.isOnline ? 'Active' : 'Inactive',
+    avatar: driver?.profile_image,
+    isAvailable: driver?.isAvailable,
+    userAccountStatus: driver?.userAccountStatus,
+    ...driver,
+    formattedLicenseExpiry: driver?.licenseExpiry
+      ? new Date(driver.licenseExpiry).toLocaleDateString()
+      : 'N/A',
+    formattedCoordinates: driver?.locationCoordinates?.coordinates
+      ? `${driver.locationCoordinates.coordinates[0]}, ${driver.locationCoordinates.coordinates[1]}`
+      : 'Not available',
+  }));
 
   const columns = [
     {
@@ -101,21 +56,40 @@ const DriverTable = () => {
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => (
-        <Space size="middle">
-          <Avatar src={record.avatar} />
-          {text}
-        </Space>
+        <div className="flex items-center gap-3">
+          <img
+            src={imageUrl(record.avatar)}
+            alt="User"
+            className="w-10 h-10 object-cover rounded-full"
+          />
+          <div className="flex flex-col">
+            <span>{text}</span>
+            <span>{record.email}</span>
+          </div>
+        </div>
       ),
     },
     {
       title: 'Contact Number',
       dataIndex: 'contactNumber',
       key: 'contactNumber',
+      render: (phone) => (
+        <Space>
+          <PhoneOutlined />
+          {phone}
+        </Space>
+      ),
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      render: (email) => (
+        <Space>
+          <IoIosMail />
+          {email}
+        </Space>
+      ),
     },
     {
       title: 'Joined',
@@ -123,11 +97,14 @@ const DriverTable = () => {
       key: 'joined',
     },
     {
-      title: 'Online Status',
-      dataIndex: 'status',
+      title: 'Status',
       key: 'status',
-      render: (status) => (
-        <Tag color={`${status === 'Active' ? 'green' : 'red'}`}>{status}</Tag>
+      render: (_, record) => (
+        <Space>
+          <Tag color={record.status === 'Active' ? 'green' : 'red'}>
+            {record.status}
+          </Tag>
+        </Space>
       ),
     },
     {
@@ -136,7 +113,10 @@ const DriverTable = () => {
       render: (_, record) => (
         <Space size="middle">
           <Button
-            onClick={() => setShowDriverModal(true)}
+            onClick={() => {
+              setShowDriverModal(true);
+              // You can pass the driver details to the modal here if needed
+            }}
             className="ant-btn ant-btn-primary"
           >
             <UserOutlined />
@@ -168,18 +148,18 @@ const DriverTable = () => {
     <div className="w-full overflow-x-auto">
       <Table
         columns={columns}
-        dataSource={users}
+        dataSource={drivers}
+        loading={driverDataLoading}
         rowKey="id"
-        pagination={
-          users.length > 5
-            ? {
-                defaultPageSize: 5,
-                showSizeChanger: false,
-              }
-            : false
-        }
+        pagination={{
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          total: driverData?.data?.meta?.total || 0,
+        }}
+        onChange={handleTableChange}
         bordered
       />
+
       <Modal
         visible={showModal}
         onCancel={() => setShowModal(false)}
@@ -190,24 +170,33 @@ const DriverTable = () => {
           <IoIosWarning size={60} color="#f6a112" />
           <h1 className="text-2xl font-bold text-black">Warning</h1>
           <p className="text-lg text-black">
-            Are you sure you want to block this user?
+            Are you sure you want to block this driver?
           </p>
           <div className="flex justify-center gap-4 mt-4">
             <Button
               type="primary"
               className="!bg-[var(--bg-pink-high)] !text-white"
+              onClick={() => {
+                // Add your block driver logic here
+                setShowModal(false);
+              }}
             >
               Yes
             </Button>
+            <Button onClick={() => setShowModal(false)}>Cancel</Button>
           </div>
         </div>
       </Modal>
+
       <Modal
         open={showDriverModal}
         onCancel={() => setShowDriverModal(false)}
         footer={null}
+        width={800}
       >
-        <DriverInfotmation />
+        <DriverInfotmation
+          driver={drivers?.find((d) => d.id === blockUserId)}
+        />
       </Modal>
     </div>
   );

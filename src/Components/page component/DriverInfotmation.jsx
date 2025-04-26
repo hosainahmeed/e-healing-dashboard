@@ -8,7 +8,8 @@ import Statics from './DrivingInformation Parts/Statics';
 const onChange = (key) => {
   console.log(key);
 };
-function DriverInfotmation() {
+function DriverInfotmation({driver}) {
+  console.log(driver)
   const driver_data = {
     name: 'Md Mojahid Islam',
     email: 'michelle.rivera@example.com',
