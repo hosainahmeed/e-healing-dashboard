@@ -109,6 +109,12 @@ const TransactionTable = () => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      render: (email) => (
+        <Space size="middle">
+          <IoIosMail />
+          {email}
+        </Space>
+      ),
     },
     {
       title: 'Date',
