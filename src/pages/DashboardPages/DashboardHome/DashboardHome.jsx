@@ -7,7 +7,7 @@ import GrowthChart from '../../../Components/charts/UserGrowthChart';
 import ActivityChart from '../../../Components/charts/ActivityChart';
 import RecentlyJoinedUsers from '../../../Components/tables/User/RecentlyJoinedUsers';
 import { useGetTotalOverviewQuery } from '../../../Redux/services/dashboard apis/total-overview/totalOverviewApis';
-import Loader from '../../../Components/Shared/Loader';
+import Loader from '../../../Components/Shared/Loaders/Loader';
 function DashboardHome() {
   const { data, isLoading } = useGetTotalOverviewQuery();
   console.log(data?.data);
