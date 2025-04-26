@@ -11,6 +11,7 @@ import {
 } from '../../../Redux/services/carApis';
 import toast from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
+import dayjs from 'dayjs';
 const { Step } = Steps;
 
 function AddNewCar() {
@@ -21,6 +22,7 @@ function AddNewCar() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [addNewCar] = useCreateNewCarMutation();
+  const [initialData, setInitialData] = useState({});
   const { data: singleCarData, isLoading: singleCarLoading } =
     useGetSingleCardDataQuery({ id });
 
@@ -36,6 +38,34 @@ function AddNewCar() {
   }
 
   useEffect(() => {
+    const evpExpiry = dayjs(singleCarData?.data?.evpExpiry);
+    const registrationDate = dayjs(singleCarData?.data?.registrationDate);
+
+    const data = {
+      brand: singleCarData?.data?.brand,
+      model: singleCarData?.data?.model,
+      type: singleCarData?.data?.type,
+      seats: singleCarData?.data?.seats,
+      evpNumber: singleCarData?.data?.evpNumber,
+      evpExpiry: evpExpiry,
+      carNumber: singleCarData?.data?.carNumber,
+      color: singleCarData?.data?.color,
+      carLicensePlate: singleCarData?.data?.carLicensePlate,
+      vin: singleCarData?.data?.vin,
+      insuranceStatus: singleCarData?.data?.insuranceStatus,
+      registrationDate: registrationDate,
+      car_image: singleCarData?.data?.car_image || [],
+      car_grant_image: singleCarData?.data?.car_grant_image,
+      car_insurance_image: singleCarData?.data?.car_insurance_image,
+      e_hailing_car_permit_image:
+        singleCarData?.data?.e_hailing_car_permit_image,
+      isAssigned: singleCarData?.data?.isAssigned,
+    };
+
+    setInitialData(data);
+  }, [singleCarData]);
+
+  useEffect(() => {
     setFormData({
       ...imageData,
       ...generalInfo,
@@ -43,6 +73,9 @@ function AddNewCar() {
       ...documentInfo,
     });
   }, [imageData, generalInfo, licenseInfo, documentInfo]);
+  useEffect(() => {
+    setImageData(singleCarData?.data?.car_image);
+  }, [singleCarData]);
 
   const steps = [
     {
@@ -70,7 +103,7 @@ function AddNewCar() {
       content: (
         <AddCarLicenseInfo
           form={form}
-          initialValues={licenseInfo}
+          initialValues={initialData}
           setLicenseInfo={setLicenseInfo}
         />
       ),
@@ -80,7 +113,7 @@ function AddNewCar() {
       content: (
         <AddCarDocument
           form={form}
-          initialValues={documentInfo}
+          initialValues={initialData}
           setDocumentInfo={setDocumentInfo}
         />
       ),
@@ -177,9 +210,7 @@ function AddNewCar() {
 
       await addNewCar({ submitFormData });
 
-      console.log('Form data submitted successfully');
       toast.success('Car added successfully!');
-
       form.resetFields();
       setCurrent(0);
       setFormData({});
@@ -203,7 +234,13 @@ function AddNewCar() {
         ))}
       </Steps>
 
-      <Form requiredMark={false} form={form} layout="vertical" className="mb-6">
+      <Form
+        requiredMark={false}
+        initialValues={initialData}
+        form={form}
+        layout="vertical"
+        className="mb-6"
+      >
         {steps[current].content}
       </Form>
 
@@ -220,7 +257,7 @@ function AddNewCar() {
           onClick={current < steps.length - 1 ? handleNext : handleSubmit}
           loading={loading}
         >
-          {current < steps.length - 1 ? 'Next' : 'Save'}
+          {current < steps.length - 1 ? 'Next' : id ? 'Update' : 'Save'}
         </Button>
       </div>
     </div>
@@ -238,7 +275,7 @@ export default AddNewCar;
 // import {
 //   useCreateNewCarMutation,
 //   useGetSingleCardDataQuery,
-//   useUpdateCarMutation, 
+//   useUpdateCarMutation,
 // } from '../../../Redux/services/carApis';
 // import toast from 'react-hot-toast';
 // import { useLocation } from 'react-router-dom';

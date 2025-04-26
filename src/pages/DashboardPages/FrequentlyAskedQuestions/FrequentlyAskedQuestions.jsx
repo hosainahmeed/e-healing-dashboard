@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PageHeading from '../../../../Components/Shared/PageHeading';
+import PageHeading from '../../../Components/Shared/PageHeading';
 import { Button, Card, Form, Input, Modal, Space } from 'antd';
 import { FaEdit } from 'react-icons/fa';
 import { AiTwotoneDelete } from 'react-icons/ai';

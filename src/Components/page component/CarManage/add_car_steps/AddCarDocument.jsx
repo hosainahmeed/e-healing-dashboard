@@ -1,10 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
+import { imageUrl } from '../../../../Utils/server';
 
 const { Dragger } = Upload;
 
-const AddCarDocument = ({ form }) => {
+const AddCarDocument = ({ form, initialValues }) => {
+  useEffect(() => {
+    if (!initialValues) return;
+
+    const createFileObject = (url, fieldName) => {
+      if (!url) return undefined;
+      return {
+        fileList: [
+          {
+            uid: `-${fieldName}`,
+            name: fieldName,
+            status: 'done',
+            url: imageUrl(url),
+          },
+        ],
+      };
+    };
+
+    form.setFieldsValue({
+      car_grant_image: createFileObject(
+        initialValues?.car_grant_image,
+        'car_grant_image'
+      ),
+      car_insurance_image: createFileObject(
+        initialValues?.car_insurance_image,
+        'car_insurance_image'
+      ),
+      e_hailing_car_permit_image: createFileObject(
+        initialValues?.e_hailing_car_permit_image,
+        'e_hailing_car_permit_image'
+      ),
+    });
+  }, [initialValues, form]);
+
   const getUploadProps = (fieldName) => ({
     beforeUpload: () => false,
     maxCount: 1,
@@ -12,7 +46,6 @@ const AddCarDocument = ({ form }) => {
     onChange: (info) => {
       const { fileList } = info;
       if (fileList.length > 0) {
-        fileList[0].originFileObj;
         const fieldValue = { fileList };
         form.setFieldsValue({ [fieldName]: fieldValue });
       }

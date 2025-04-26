@@ -1,11 +1,24 @@
 import React from 'react';
 import { Form, Input, DatePicker, InputNumber, Select } from 'antd';
+import moment from 'moment';
 
-const AddCarLicenseInfo = ({ form }) => {
+const AddCarLicenseInfo = ({ form, initialValues }) => {
+  const handleDateChange = (date, dateString, fieldName) => {
+    if (date && moment(date).isValid()) {
+      form.setFieldsValue({
+        [fieldName]: date,
+      });
+    } else {
+      form.setFieldsValue({
+        [fieldName]: null,
+      });
+    }
+  };
+
   return (
     <div>
       <h3 className="text-lg font-medium mb-4">License Information</h3>
-      <Form layout="vertical" form={form}>
+      <Form initialValues={initialValues} layout="vertical" form={form}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Form.Item
             name="carNumber"
@@ -43,7 +56,12 @@ const AddCarLicenseInfo = ({ form }) => {
               { required: true, message: 'Please select the EVP expiry date' },
             ]}
           >
-            <DatePicker style={{ width: '100%' }} />
+            <DatePicker
+              style={{ width: '100%' }}
+              onChange={(date, dateString) =>
+                handleDateChange(date, dateString, 'evpExpiry')
+              }
+            />
           </Form.Item>
 
           <Form.Item
@@ -74,7 +92,12 @@ const AddCarLicenseInfo = ({ form }) => {
               },
             ]}
           >
-            <DatePicker style={{ width: '100%' }} />
+            <DatePicker
+              style={{ width: '100%' }}
+              onChange={(date, dateString) =>
+                handleDateChange(date, dateString, 'registrationDate')
+              }
+            />
           </Form.Item>
 
           <Form.Item
@@ -86,7 +109,7 @@ const AddCarLicenseInfo = ({ form }) => {
           >
             <Select placeholder="Select insurance status">
               <Select.Option value="active">Active</Select.Option>
-              <Select.Option value="inactive">In active</Select.Option>
+              <Select.Option value="inactive">Inactive</Select.Option>
             </Select>
           </Form.Item>
         </div>

@@ -20,7 +20,8 @@ import Profile from '../pages/DashboardPages/ProfilePages/Profile';
 import AddNewCar from '../Components/page component/CarManage/AddNewCar';
 import AddCarImage from '../Components/page component/CarManage/add_car_steps/AddCarImage';
 import AddCarGeneralInfo from '../Components/page component/CarManage/add_car_steps/AddCarGeneralInfo';
-import FrequentlyAskedQuestions from '../pages/DashboardPages/DashboardHome/Frequently Asked Questions/FrequentlyAskedQuestions';
+import FrequentlyAskedQuestions from '../pages/DashboardPages/FrequentlyAskedQuestions/FrequentlyAskedQuestions';
+
 
 export const Routes = createBrowserRouter([
   {

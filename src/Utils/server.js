@@ -1,6 +1,4 @@
-const url = import.meta.env.VITE_API_URL;
-console.log(url);
-console.log(import.meta.env);
+export const url = import.meta.env.VITE_API_URL;
 
 export const imageUrl = (image) => {
   return image

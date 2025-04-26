@@ -3,33 +3,19 @@ import PageHeading from '../../../Components/Shared/PageHeading';
 import { Button, Card, Divider, Form, Input } from 'antd';
 
 function DcoinsConverter() {
-  // State to hold the MYR and D COIN values
+
   const [myrValue, setMyrValue] = useState(1);
   const [dcoinValue, setDcoinValue] = useState(10);
   const [isEdit, setIsEdit] = useState(false);
 
-  const handleSave = (values) => {
-    // Create FormData object
+  const handleSave = async (values) => {
     const formData = new FormData();
     formData.append('myr', values.myr);
     formData.append('dcoin', values.dcoin);
-
-    // Update the state with new values after saving
     setMyrValue(values.myr);
     setDcoinValue(values.dcoin);
 
-    // Log the FormData to see the values (for debugging)
-    console.log('FormData:', formData);
-
-    // Example: Here you would typically send `formData` to the server
-    // fetch('/your-endpoint', {
-    //   method: 'POST',
-    //   body: formData,
-    // }).then(response => response.json())
-    //   .then(data => console.log('Success:', data))
-    //   .catch(error => console.error('Error:', error));
-
-    setIsEdit(false); // Exit edit mode
+    setIsEdit(false);
   };
 
   return (
