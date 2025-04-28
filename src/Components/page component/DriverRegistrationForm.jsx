@@ -137,12 +137,7 @@ const DriverRegistrationForm = () => {
             alt="avatar"
             className="w-full h-full rounded-full object-cover"
           />
-          <div
-            className="absolute bottom-0 right-0 border border-dashed w-6 h-6 bg-[var(--bg-pink-high)] flex items-center justify-center rounded-full cursor-pointer"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <FaCameraRetro color="white" />
-          </div>
+
           <div
             className="absolute top-0 right-0 border border-dashed w-6 h-6 bg-red-500 flex items-center justify-center rounded-full cursor-pointer"
             onClick={handleRemoveAvatar}
@@ -152,10 +147,13 @@ const DriverRegistrationForm = () => {
           </div>
         </div>
       ) : (
-        <>
-          <FaUser className="text-gray-400" size={32} />
+        <div className="flex relative w-full h-full flex-col items-center">
+          <FaUser className="text-gray-400 !mt-4" size={32} />
           <div className="mt-2 text-gray-500">Upload</div>
-        </>
+          <div className="absolute bottom-0 right-0 border border-dashed w-6 h-6 bg-[var(--bg-pink-high)] flex items-center justify-center rounded-full cursor-pointer">
+            <FaCameraRetro className='!cursor-pointer ' onClick={(e) => e.stopPropagation()} color="white" />
+          </div>
+        </div>
       )}
     </div>
   );

@@ -10,12 +10,14 @@ import { imageUrl } from '../../../Utils/server';
 
 const DriverTable = () => {
   const [showModal, setShowModal] = useState(false);
-  const [showDriverModal, setShowDriverModal] = useState(false);
+  const [showDriverModal, setShowDriverModal] = useState(true);
   const [blockUserId, setBlockUserId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
   });
+  console.log(selectedId);
   const roleData = {
     role: 'DRIVER',
   };
@@ -115,6 +117,7 @@ const DriverTable = () => {
           <Button
             onClick={() => {
               setShowDriverModal(true);
+              setSelectedId(record.id);
               // You can pass the driver details to the modal here if needed
             }}
             className="ant-btn ant-btn-primary"
@@ -194,9 +197,7 @@ const DriverTable = () => {
         footer={null}
         width={800}
       >
-        <DriverInfotmation
-          driver={drivers?.find((d) => d.id === blockUserId)}
-        />
+        <DriverInfotmation id={selectedId} />
       </Modal>
     </div>
   );

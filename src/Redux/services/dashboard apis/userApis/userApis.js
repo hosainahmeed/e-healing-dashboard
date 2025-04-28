@@ -16,8 +16,18 @@ export const userApis = baseApis.injectEndpoints({
         body: { status: status },
       }),
     }),
+    getSingleUserOrDriver: builder.query({
+      query: ({ id }) => ({
+        url: `/dashboard/get-user`,
+        method: 'GET',
+        params: { userId: id },
+      }),
+    }),
   }),
 });
 
-export const { useGetAllUserOrDriverQuery, useUpdateUserStatusMutation } =
-  userApis;
+export const {
+  useGetAllUserOrDriverQuery,
+  useUpdateUserStatusMutation,
+  useGetSingleUserOrDriverQuery,
+} = userApis;

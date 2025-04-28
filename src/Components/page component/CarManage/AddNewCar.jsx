@@ -61,9 +61,8 @@ function AddNewCar() {
         singleCarData?.data?.e_hailing_car_permit_image,
       isAssigned: singleCarData?.data?.isAssigned,
     };
-
     setInitialData(data);
-  }, [singleCarData]);
+  }, [singleCarData, form]);
 
   useEffect(() => {
     setFormData({

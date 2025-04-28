@@ -5,11 +5,21 @@ import Driving from './DrivingInformation Parts/Driving';
 import Car from './DrivingInformation Parts/Car';
 import Documents from './DrivingInformation Parts/Documents';
 import Statics from './DrivingInformation Parts/Statics';
+import { useGetSingleUserOrDriverQuery } from '../../Redux/services/dashboard apis/userApis/userApis';
 const onChange = (key) => {
   console.log(key);
 };
-function DriverInfotmation({driver}) {
-  console.log(driver)
+function DriverInfotmation({ id }) {
+  const { data, isLoading } = useGetSingleUserOrDriverQuery({ id });
+
+  if (!isLoading) {
+    return <div>
+      <div>
+        <div className='w-12'></div>
+      </div>
+    </div>;
+  }
+  console.log(data);
   const driver_data = {
     name: 'Md Mojahid Islam',
     email: 'michelle.rivera@example.com',
