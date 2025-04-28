@@ -2,16 +2,25 @@ import React from 'react';
 import { BsPatchQuestion } from 'react-icons/bs';
 import { FaCoins, FaRegUserCircle } from 'react-icons/fa';
 import { FaCarOn } from 'react-icons/fa6';
-import {  LuChartNoAxesCombined } from 'react-icons/lu';
-import { MdAdminPanelSettings, MdOutlineDateRange, MdOutlinePrivacyTip } from 'react-icons/md';
-import { RiDashboard2Line, RiTeamFill } from 'react-icons/ri';
+import { LuChartNoAxesCombined } from 'react-icons/lu';
+import {
+  MdAdminPanelSettings,
+  MdOutlineDateRange,
+  MdOutlinePrivacyTip,
+} from 'react-icons/md';
+import {  RiTeamFill } from 'react-icons/ri';
 import { TbCategoryPlus } from 'react-icons/tb';
+import DashboardIcon from '../../assets/sidebarIcons/passive/dashboard.svg';
+import DashboardIconActive from '../../assets/sidebarIcons/active/dashboard.svg';
 
 export const SidebarLink = [
   {
     path: '/',
     label: 'Dashboard',
-    icon: <RiDashboard2Line size={24} />,
+    icon: {
+      active: <img className='w-5 h-5 object-cover' src={DashboardIconActive} />,
+      inactive: <img className='w-5 h-5 object-cover' src={DashboardIcon} />,
+    },
   },
   {
     path: '/user-management',

@@ -49,7 +49,10 @@ const Sidebar = () => {
           } whitespace-nowrap links`}
           key={item?.path}
         >
-          {item?.icon} {item?.label}
+          {item?.path === location.pathname
+            ? item?.icon?.active
+            : item?.icon?.inactive}
+          {item?.label}
         </NavLink>
       ))}
       <div className="relative">
