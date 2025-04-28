@@ -3,8 +3,8 @@ import { Cell, Pie, PieChart } from 'recharts';
 
 const ActivityStatisticsChart = () => {
   const data = [
-    { name: 'Active Client', value: 1576 },
-    { name: 'Active Talent', value: 750 },
+    { name: ' Active User', value: 1576 },
+    { name: 'Active Driver', value: 750 },
   ];
 
   const totalValue = data.reduce((sum, item) => sum + item.value, 0);

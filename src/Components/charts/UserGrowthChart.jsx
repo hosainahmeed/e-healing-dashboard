@@ -104,8 +104,8 @@ const UserGrowthChart = () => {
         >
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#9333EA" stopOpacity={0.9} />
-              <stop offset="95%" stopColor="#9333EA" stopOpacity={0.3} />
+              <stop offset="5%" stopColor="#9333EA" stopOpacity={0.2} />
+              <stop offset="95%" stopColor="#9333EA" stopOpacity={0.9} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#E0E0E0" />
@@ -126,7 +126,7 @@ const UserGrowthChart = () => {
               borderRadius: '8px',
               padding: '8px',
             }}
-            cursor={{ fill: 'rgba(76, 175, 80, 0.1)' }}
+            cursor={{ fill: 'rgba(170,119,217,0.1)' }}
           />
           <Legend wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
           <Bar

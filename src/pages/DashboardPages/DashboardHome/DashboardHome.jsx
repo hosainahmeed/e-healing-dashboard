@@ -33,11 +33,17 @@ function DashboardHome() {
       <div className="flex items-center  justify-between bg-gradient-to-tr from-[#F6F6F6] via-white to-[var(--bg-pink-high)]/70 p-12 rounded-xl">
         {cardData.map((card, index) => (
           <div className="" key={index}>
-            <div className="flex items-center gap-3">
-              <h1>{card.icon}</h1>
-              <div>
-                <h1 className="text-3xl !font-semibold">{card.title}</h1>
-                <h1 className="text-3xl !font-semibold text-[var(--bg-pink-high)]">
+            <div
+              className={`flex ${
+                index !== 2 ? 'border-r-2' : ''
+              } px-12 items-center justify-center gap-3`}
+            >
+              <div className='w-28 h-28 flex items-center justify-center'>{card.icon}</div>
+              <div className="flex items-start flex-col justify-center ">
+                <h1 className="text-3xl !font-semibold leadingflex items-center justify-center -4">
+                  {card.title}
+                </h1>
+                <h1 className="text-3xl !font-semibold leading-4 text-[var(--bg-pink-high)]">
                   {card.value}
                 </h1>
               </div>

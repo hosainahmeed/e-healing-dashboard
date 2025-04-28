@@ -46,12 +46,19 @@ function Statics({ data }) {
   };
 
   const items = [
-    { key: '1', label: 'Daily', children: renderStats('daily') },
-    { key: '2', label: 'Weekly', children: renderStats('Weekly') },
-    { key: '3', label: 'Monthly', children: renderStats('Monthly') },
-    { key: '4', label: 'Yearly', children: renderStats('Yearly') },
+    { key: '1', label: 'Today', children: renderStats('daily') },
+    { key: '2', label: 'This Week', children: renderStats('Weekly') },
+    { key: '3', label: 'This Month', children: renderStats('Monthly') },
+    { key: '4', label: 'This Year', children: renderStats('Yearly') },
+    { key: '5', label: 'All time', children: renderStats('Yearly') },
   ];
-
+  // const items = [
+  //   { key: '1', label: 'Today', children: renderStats('today') },
+  //   { key: '2', label: 'This Week', children: renderStats('last-7-days') },
+  //   { key: '3', label: 'This Month', children: renderStats('this-month') },
+  //   { key: '4', label: 'This Year', children: renderStats('this-year') },
+  //   { key: '4', label: 'All time', children: renderStats('all-time') },
+  // ];
   return (
     <div>
       <div>
