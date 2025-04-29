@@ -16,7 +16,7 @@ function DriverInfotmation({ id }) {
     return (
       <div>
         <div className="flex items-center flex-col justify-center">
-          <div className="w-12 h-12 bg-gray-200 animate-pulse rounded-full"></div>
+          <div className="w-24 h-24 bg-gray-200 animate-pulse rounded-full"></div>
           <div className='w-full'>
             <Divider></Divider>
             <div className=" flex items-start gap-2 justify-start">

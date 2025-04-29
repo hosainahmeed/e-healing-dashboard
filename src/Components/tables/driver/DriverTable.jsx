@@ -10,7 +10,7 @@ import { imageUrl } from '../../../Utils/server';
 
 const DriverTable = () => {
   const [showModal, setShowModal] = useState(false);
-  const [showDriverModal, setShowDriverModal] = useState(true);
+  const [showDriverModal, setShowDriverModal] = useState(false);
   const [blockUserId, setBlockUserId] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [pagination, setPagination] = useState({

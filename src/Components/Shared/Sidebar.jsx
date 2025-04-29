@@ -94,7 +94,10 @@ const Sidebar = () => {
                 : '!bg-[var(--text-light)] !text-[var(--text-dark)]'
             } whitespace-nowrap links`}
           >
-            {item?.icon} {item?.label}
+            {item?.path === location.pathname
+              ? item?.icon?.active
+              : item?.icon?.inactive}
+            {item?.label}
           </NavLink>
         ))}
       </div>
