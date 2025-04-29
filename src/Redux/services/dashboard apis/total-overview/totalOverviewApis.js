@@ -8,7 +8,18 @@ const totalOverviewApis = baseApis.injectEndpoints({
         method: 'GET',
       }),
     }),
+    growthOverview: builder.query({
+      query: ({ role, year }) => ({
+        url: '/dashboard/growth',
+        method: 'GET',
+        params: {
+          role,
+          year,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetTotalOverviewQuery } = totalOverviewApis;
+export const { useGetTotalOverviewQuery, useGrowthOverviewQuery } =
+  totalOverviewApis;

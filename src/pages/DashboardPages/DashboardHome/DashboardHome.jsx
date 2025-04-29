@@ -10,7 +10,6 @@ import { useGetTotalOverviewQuery } from '../../../Redux/services/dashboard apis
 import Loader from '../../../Components/Shared/Loaders/Loader';
 function DashboardHome() {
   const { data, isLoading } = useGetTotalOverviewQuery();
-  console.log(data?.data);
   const cardData = [
     {
       title: 'Total Drivers',
@@ -28,6 +27,7 @@ function DashboardHome() {
       icon: <img src={carIcon} alt="" />,
     },
   ];
+
   return (
     <div>
       <div className="flex items-center  justify-between bg-gradient-to-tr from-[#F6F6F6] via-white to-[var(--bg-pink-high)]/70 p-12 rounded-xl">
@@ -38,7 +38,9 @@ function DashboardHome() {
                 index !== 2 ? 'border-r-2' : ''
               } px-12 items-center justify-center gap-3`}
             >
-              <div className='w-28 h-28 flex items-center justify-center'>{card.icon}</div>
+              <div className="w-28 h-28 flex items-center justify-center">
+                {card.icon}
+              </div>
               <div className="flex items-start flex-col justify-center ">
                 <h1 className="text-3xl !font-semibold leadingflex items-center justify-center -4">
                   {card.title}
@@ -56,7 +58,13 @@ function DashboardHome() {
           <GrowthChart />
         </div>
         <div className="xl:col-span-1 col-span-4 shadow-lg">
-          <ActivityChart />
+          {isLoading ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <Loader />
+            </div>
+          ) : (
+            <ActivityChart activity={data?.data} />
+          )}
         </div>
       </div>
       <div className="mt-4">

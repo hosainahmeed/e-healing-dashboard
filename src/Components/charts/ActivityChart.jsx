@@ -1,13 +1,15 @@
 import React from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
+import Loader from '../Shared/Loaders/Loader';
 
-const ActivityStatisticsChart = () => {
-  const data = [
-    { name: ' Active User', value: 1576 },
-    { name: 'Active Driver', value: 750 },
+const ActivityStatisticsChart = ({ activity }) => {
+  console.log(activity);
+  const datas = [
+    { name: ' Active User', value: activity?.onlineUser },
+    { name: 'Active Driver', value: activity?.onlineDriver },
   ];
 
-  const totalValue = data.reduce((sum, item) => sum + item.value, 0);
+  const totalValue = datas.reduce((sum, item) => sum + item.value, 0);
 
   const COLORS = ['#9333EA', '#E9D5FF'];
 
@@ -21,7 +23,7 @@ const ActivityStatisticsChart = () => {
         {/* PieChart Component */}
         <PieChart width={240} height={240}>
           <Pie
-            data={data}
+            data={datas}
             cx={120}
             cy={120}
             startAngle={90}
@@ -31,7 +33,7 @@ const ActivityStatisticsChart = () => {
             paddingAngle={0}
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {datas.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}
@@ -44,14 +46,22 @@ const ActivityStatisticsChart = () => {
         {/* Center Total Value */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="text-xl xl:text-3xl font-bold text-gray-800">
-            {totalValue}
+            {activity ? (
+              totalValue >= 1000 ? (
+                (totalValue / 1000).toFixed(1) + 'K'
+              ) : (
+                totalValue
+              )
+            ) : (
+              <Loader />
+            )}
           </div>
         </div>
       </div>
 
       {/* Legend Section */}
       <div className="mt-6 space-y-4">
-        {data.map((entry, index) => (
+        {datas.map((entry, index) => (
           <div
             key={`legend-${index}`}
             className="flex items-center justify-between"
@@ -64,7 +74,7 @@ const ActivityStatisticsChart = () => {
               <span className="text-xl text-gray-800">{entry.name}</span>
             </div>
             <div className="bg-purple-100 rounded-lg px-4 py-1 text-xl text-purple-400">
-              {entry.value}
+              {entry.value || 0}
             </div>
           </div>
         ))}

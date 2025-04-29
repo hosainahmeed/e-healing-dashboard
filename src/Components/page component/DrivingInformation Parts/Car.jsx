@@ -1,4 +1,3 @@
-import { Button, Card } from 'antd';
 import React from 'react';
 import { imageUrl } from '../../../Utils/server';
 import { FaCarCrash } from 'react-icons/fa';

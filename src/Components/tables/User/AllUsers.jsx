@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Table, Tag, Space, Avatar, Button, Modal, Select } from 'antd';
+import { Table, Space, Avatar, Button, Modal, Select } from 'antd';
 import { UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { CgBlock } from 'react-icons/cg';
-import { IoIosWarning } from 'react-icons/io';
+import { IoIosWarning, IoIosMail } from 'react-icons/io';
 import {
   useGetAllUserOrDriverQuery,
   useUpdateUserStatusMutation,
 } from '../../../Redux/services/dashboard apis/userApis/userApis';
 import toast from 'react-hot-toast';
-
-const AllUsers = () => {
+const AllUsers = ({ recentUser }) => {
   const [showModal, setShowModal] = useState(false);
   const [blockUserId, setBlockUserId] = useState(null);
   const [isUserBlock, setUserBlock] = useState(false);
@@ -36,8 +35,12 @@ const AllUsers = () => {
     //   console.error('Update error:', error);
     // }
   };
-  console.log(userData);
-  const users = userData?.data?.result?.map((user) => ({
+
+  const userDataShowing = recentUser
+    ? userData?.data?.result.slice(0, 4)
+    : userData?.data?.result;
+
+  const users = userDataShowing?.map((user) => ({
     key: user?._id,
     id: user?._id,
     authId: user?.authId?._id,
@@ -79,6 +82,12 @@ const AllUsers = () => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      render: (email) => (
+        <Space>
+          <IoIosMail />
+          {email}
+        </Space>
+      ),
     },
     {
       title: 'Joined',
