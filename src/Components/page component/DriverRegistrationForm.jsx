@@ -16,7 +16,18 @@ const { Step } = Steps;
 const DriverRegistrationForm = () => {
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    name: 'Hosain',
+    email: 'emil@gmail.co',
+    address: 'Dhaka',
+    password: '23123',
+    phoneNumber: '23123',
+    idOrPassportNo: 'passport1212',
+    drivingLicenseNo: 'drivingLicenseNo12123',
+    licenseType: 'licenseType',
+    licenseExpiry: new Date('2025-12-31').toISOString(),
+  });
+
   const [imageUrl, setImageUrl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
 
@@ -147,11 +158,15 @@ const DriverRegistrationForm = () => {
           </div>
         </div>
       ) : (
-        <div className="flex relative w-full h-full flex-col items-center">
+        <div className="flex relative !cursor-pointer w-full h-full flex-col items-center">
           <FaUser className="text-gray-400 !mt-4" size={32} />
           <div className="mt-2 text-gray-500">Upload</div>
           <div className="absolute bottom-0 right-0 border border-dashed w-6 h-6 bg-[var(--bg-pink-high)] flex items-center justify-center rounded-full cursor-pointer">
-            <FaCameraRetro className='!cursor-pointer ' onClick={(e) => e.stopPropagation()} color="white" />
+            <FaCameraRetro
+              className="!cursor-pointer "
+              onClick={(e) => e.stopPropagation()}
+              color="white"
+            />
           </div>
         </div>
       )}
@@ -232,7 +247,7 @@ const DriverRegistrationForm = () => {
             </Form.Item>
 
             <Form.Item
-              name="contactNo"
+              name="phoneNumber"
               label="Contact No"
               rules={[
                 { required: true, message: 'Please enter contact number' },
@@ -246,7 +261,7 @@ const DriverRegistrationForm = () => {
         {current === 1 && (
           <div>
             <Form.Item
-              name="nationalId"
+              name="idOrPassportNo"
               label="National ID/Passport"
               rules={[
                 {
@@ -280,7 +295,7 @@ const DriverRegistrationForm = () => {
             </Form.Item>
 
             <Form.Item
-              name="licenseExpire"
+              name="licenseExpiry"
               label="License Expire"
               rules={[{ required: true, message: 'Please select expiry date' }]}
             >

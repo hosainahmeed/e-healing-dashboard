@@ -7,7 +7,7 @@ import DriverRegistrationForm from '../../../Components/page component/DriverReg
 import DriverTable from '../../../Components/tables/driver/DriverTable';
 
 function DriverManage() {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -36,8 +36,8 @@ function DriverManage() {
       >
         <DriverRegistrationForm />
       </Modal>
-      <div className='mt-4'>
-      <DriverTable />
+      <div className="mt-4">
+        <DriverTable />
       </div>
     </div>
   );
