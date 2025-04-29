@@ -5,8 +5,12 @@ import { CgBlock } from 'react-icons/cg';
 import { IoIosMail, IoIosWarning } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import DriverInfotmation from '../../page component/DriverInfotmation';
-import { useGetAllUserOrDriverQuery } from '../../../Redux/services/dashboard apis/userApis/userApis';
+import {
+  useGetAllUserOrDriverQuery,
+  useUpdateUserStatusMutation,
+} from '../../../Redux/services/dashboard apis/userApis/userApis';
 import { imageUrl } from '../../../Utils/server';
+import toast from 'react-hot-toast';
 
 const DriverTable = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,21 +21,28 @@ const DriverTable = () => {
     current: 1,
     pageSize: 10,
   });
+  const [userBlock, setUserBlock] = useState(false);
   console.log(selectedId);
   const roleData = {
     role: 'DRIVER',
   };
-  const { data: driverData, isLoading: driverDataLoading } =
-    useGetAllUserOrDriverQuery({
-      params: roleData,
-      page: pagination.current,
-      limit: pagination.pageSize,
-    });
+
+  const {
+    data: driverData,
+    isLoading: driverDataLoading,
+    refetch,
+  } = useGetAllUserOrDriverQuery({
+    params: roleData,
+    page: pagination.current,
+    limit: pagination.pageSize,
+  });
+
+  const [updateUserStatus] = useUpdateUserStatusMutation();
 
   const handleTableChange = (pagination) => {
     setPagination(pagination);
   };
-  console.log(driverData);
+
   const drivers = driverData?.data?.result?.map((driver) => ({
     id: driver?._id,
     key: driver?._id,
@@ -42,6 +53,8 @@ const DriverTable = () => {
     status: driver?.isOnline ? 'Active' : 'Inactive',
     avatar: driver?.profile_image,
     isAvailable: driver?.isAvailable,
+    authId: driver?.authId?._id,
+    isBlocked: driver?.authId?.isBlocked,
     userAccountStatus: driver?.userAccountStatus,
     ...driver,
     formattedLicenseExpiry: driver?.licenseExpiry
@@ -117,8 +130,7 @@ const DriverTable = () => {
           <Button
             onClick={() => {
               setShowDriverModal(true);
-              setSelectedId(record.id);
-              // You can pass the driver details to the modal here if needed
+              setSelectedId(record?.key);
             }}
             className="ant-btn ant-btn-primary"
           >
@@ -135,10 +147,13 @@ const DriverTable = () => {
           </Link>
           <Button
             onClick={() => {
-              setBlockUserId(record.id);
+              setBlockUserId(record.authId);
+              setUserBlock(record.isBlocked);
               setShowModal(true);
             }}
-            className="ant-btn ant-btn-default"
+            className={`ant-btn ant-btn-default ${
+              record.isBlocked ? '!bg-red-300' : '!bg-green-300'
+            }`}
           >
             <CgBlock />
           </Button>
@@ -146,6 +161,48 @@ const DriverTable = () => {
       ),
     },
   ];
+
+  const handleUnblockUser = async () => {
+    if (!blockUserId) {
+      return toast.error('Please select a user to unblock');
+    }
+    try {
+      const data = {
+        authId: blockUserId,
+        isBlocked: false,
+      };
+      const res = await updateUserStatus({ data }).unwrap();
+      if (res?.success) {
+        toast.success('User successfully unblocked');
+        setShowModal(false);
+      }
+      refetch();
+    } catch (error) {
+      toast.error('Failed to unblock user');
+      console.error('Update error:', error);
+    }
+  };
+
+  const handleBlockUser = async () => {
+    if (!blockUserId) {
+      return toast.error('Please select a user to block');
+    }
+    try {
+      const data = {
+        authId: blockUserId,
+        isBlocked: true,
+      };
+      const res = await updateUserStatus({ data }).unwrap();
+      if (res?.success) {
+        toast.success('User successfully blocked');
+        setShowModal(false);
+      }
+      refetch();
+    } catch (error) {
+      toast.error('Failed to block user');
+      console.error('Update error:', error);
+    }
+  };
 
   return (
     <div className="w-full overflow-x-auto">
@@ -173,16 +230,14 @@ const DriverTable = () => {
           <IoIosWarning size={60} color="#f6a112" />
           <h1 className="text-2xl font-bold text-black">Warning</h1>
           <p className="text-lg text-black">
-            Are you sure you want to block this driver?
+            Are you sure you want to {userBlock ? 'unblock' : 'block'} this
+            driver?
           </p>
           <div className="flex justify-center gap-4 mt-4">
             <Button
               type="primary"
               className="!bg-[var(--bg-pink-high)] !text-white"
-              onClick={() => {
-                // Add your block driver logic here
-                setShowModal(false);
-              }}
+              onClick={userBlock ? handleUnblockUser : handleBlockUser}
             >
               Yes
             </Button>

@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Table,
-  Tag,
-  Space,
-  Avatar,
-  Button,
-  Modal,
-  Select,
-  message,
-} from 'antd';
+import { Table, Tag, Space, Avatar, Button, Modal, Select } from 'antd';
 import { UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { CgBlock } from 'react-icons/cg';
 import { IoIosWarning } from 'react-icons/io';
@@ -21,6 +12,8 @@ import toast from 'react-hot-toast';
 const AllUsers = () => {
   const [showModal, setShowModal] = useState(false);
   const [blockUserId, setBlockUserId] = useState(null);
+  const [isUserBlock, setUserBlock] = useState(false);
+
   const params = { role: 'USER' };
   const {
     data: userData,
@@ -30,18 +23,18 @@ const AllUsers = () => {
   const [updateUserStatus] = useUpdateUserStatusMutation();
 
   const handleStatusChange = async (userId, newStatus) => {
-    try {
-      const res = await updateUserStatus({
-        userId,
-        status: newStatus,
-      }).unwrap();
-      console.log(res);
-      toast.success('User status updated successfully');
-      refetch();
-    } catch (error) {
-      toast.error('Failed to update user status');
-      console.error('Update error:', error);
-    }
+    // try {
+    //   const res = await updateUserStatus({
+    //     userId,
+    //     status: newStatus,
+    //   }).unwrap();
+    //   console.log(res);
+    //   toast.success('User status updated successfully');
+    //   refetch();
+    // } catch (error) {
+    //   toast.error('Failed to update user status');
+    //   console.error('Update error:', error);
+    // }
   };
   console.log(userData);
   const users = userData?.data?.result?.map((user) => ({
@@ -49,6 +42,7 @@ const AllUsers = () => {
     id: user?._id,
     authId: user?.authId?._id,
     name: user?.name,
+    isBlocked: user?.authId?.isBlocked,
     email: user?.email,
     role: user?.role,
     contactNumber: user?.phoneNumber,
@@ -116,10 +110,13 @@ const AllUsers = () => {
           </Button>
           <Button
             onClick={() => {
-              setBlockUserId(record.id);
+              setBlockUserId(record?.authId);
+              setUserBlock(record?.isBlocked);
               setShowModal(true);
             }}
-            className="ant-btn ant-btn-default"
+            className={` ${
+              record?.isBlocked ? '!bg-red-300' : '!bg-green-200'
+            } ant-btn ant-btn-default`}
           >
             <CgBlock />
           </Button>
@@ -128,16 +125,44 @@ const AllUsers = () => {
     },
   ];
 
-  const handleBlockUser = async () => {
+  const handleUnblockUser = async () => {
+    if (!blockUserId) {
+      return toast.error('Please select a user to block');
+    }
     try {
-      // Add your block user mutation here
-      // await blockUserMutation(blockUserId).unwrap();
-      message.success('User blocked successfully');
+      const data = {
+        authId: blockUserId,
+        isBlocked: false,
+      };
+      const res = await updateUserStatus({ data }).unwrap();
+      if (res?.success) {
+        toast.success('User successfully unblocked');
+        setShowModal(false);
+      }
       refetch();
-      setShowModal(false);
     } catch (error) {
-      message.error('Failed to block user');
-      console.error('Block error:', error);
+      toast.error('Failed to unblock user');
+      console.error('Update error:', error);
+    }
+  };
+  const handleBlockUser = async () => {
+    if (!blockUserId) {
+      return toast.error('Please select a user to block');
+    }
+    try {
+      const data = {
+        authId: blockUserId,
+        isBlocked: true,
+      };
+      const res = await updateUserStatus({ data }).unwrap();
+      if (res?.success) {
+        toast.success('User successfully blocked');
+        setShowModal(false);
+      }
+      refetch();
+    } catch (error) {
+      toast.error('Failed to block user');
+      console.error('Update error:', error);
     }
   };
 
@@ -169,13 +194,14 @@ const AllUsers = () => {
           <IoIosWarning size={60} color="#f6a112" />
           <h1 className="text-2xl font-bold text-black">Warning</h1>
           <p className="text-lg text-black">
-            Are you sure you want to block this user?
+            Are you sure you want to {isUserBlock ? 'unblock' : 'block'} this
+            user?
           </p>
           <div className="flex justify-center gap-4 mt-4">
             <Button
               type="primary"
               className="!bg-[var(--bg-pink-high)] !text-white"
-              onClick={handleBlockUser}
+              onClick={isUserBlock ? handleUnblockUser : handleBlockUser}
             >
               Yes
             </Button>

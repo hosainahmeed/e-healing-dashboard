@@ -5,19 +5,20 @@ import Driving from './DrivingInformation Parts/Driving';
 import Car from './DrivingInformation Parts/Car';
 import Documents from './DrivingInformation Parts/Documents';
 import Statics from './DrivingInformation Parts/Statics';
-import { useGetSingleUserOrDriverQuery } from '../../Redux/services/dashboard apis/userApis/userApis';
+import { useGetDriverQuery } from '../../Redux/services/dashboard apis/userApis/driverApis';
+import { imageUrl } from '../../Utils/server';
 const onChange = (key) => {
   console.log(key);
 };
 function DriverInfotmation({ id }) {
-  const { data, isLoading } = useGetSingleUserOrDriverQuery({ id });
+  const { data, isLoading } = useGetDriverQuery({ id });
 
   if (isLoading) {
     return (
       <div>
         <div className="flex items-center flex-col justify-center">
           <div className="w-24 h-24 bg-gray-200 animate-pulse rounded-full"></div>
-          <div className='w-full'>
+          <div className="w-full">
             <Divider></Divider>
             <div className=" flex items-start gap-2 justify-start">
               {Array.from({ length: 7 }).map((_, x) => (
@@ -27,89 +28,51 @@ function DriverInfotmation({ id }) {
                 ></div>
               ))}
             </div>
-            <div className='w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md'></div>
-            <div className='w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md'></div>
+            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
           </div>
         </div>
       </div>
     );
   }
-  console.log(data);
-  const driver_data = {
-    name: 'Md Mojahid Islam',
-    email: 'michelle.rivera@example.com',
-    password: 'driver1123',
-    address: 'San Francisco, United States',
-    contact_no: '+99007007007',
-    national_id_passport: '759175632578',
-    driving_license_no: '759175632578',
-    license_type: 'Havy vichale',
-    license_expire: '15th August 2027',
-    car_model: 'Model 3 Long Range 2023',
-    color: 'Midnight Silver Metallic',
-    license_plate: 'EV-5678',
-    statics: {
-      get_rating: 4.5,
-      total_rating: 5,
-      driving_info: {
-        daily: {
-          total_earn: 2000,
-          hand_cash: 1000,
-          online_cash: 1000,
-          active_hours: 10,
-          trip_distance: 10,
-        },
-        Weekly: {
-          total_earn: 12000,
-          hand_cash: 1000,
-          online_cash: 1000,
-          active_hours: 10,
-          trip_distance: 10,
-        },
-        Monthly: {
-          total_earn: 30000,
-          hand_cash: 1000,
-          online_cash: 1000,
-          active_hours: 10,
-          trip_distance: 10,
-        },
-        Yearly: {
-          total_earn: 132000,
-          hand_cash: 1000,
-          online_cash: 1000,
-          active_hours: 10,
-          trip_distance: 10,
-        },
-      },
-    },
-    car_model_image:
-      'https://www.stratstone.com/-/media/stratstone/blog/2024/top-10-best-supercars-of-2024/mclaren-750s-driving-dynamic-hero-1920x774px.ashx',
-    national_id_passport_img:
-      'https://img.freepik.com/premium-vector/turkey-driving-licence-isolated-white-background-turkish-driving-licence-person-driver-license_360685-568.jpg',
-    psv_license_img:
-      'https://img.freepik.com/premium-vector/turkey-driving-licence-isolated-white-background-turkish-driving-licence-person-driver-license_360685-568.jpg',
-    driving_license_img:
-      'https://img.freepik.com/premium-vector/turkey-driving-licence-isolated-white-background-turkish-driving-licence-person-driver-license_360685-568.jpg',
+
+  const driver_data = data?.data;
+  console.log(driver_data);
+  const driver_data_genarale = {
+    name: driver_data?.name || 'N/A',
+    email: driver_data?.email || 'N/A',
+    role: driver_data?.role || 'N/A',
+    profile_image: driver_data?.profile_image || 'N/A',
+    phone_number: driver_data?.phoneNumber || 'N/A',
+    address: driver_data?.address || 'N/A',
+    isOnline: driver_data?.isOnline || 'N/A',
+  };
+
+  const driver_data_driving = {
+    idOrPassportNo: driver_data?.idOrPassportNo || 'N/A',
+    drivingLicenseNo: driver_data?.drivingLicenseNo || 'N/A',
+    licenseType: driver_data?.licenseType || 'N/A',
+    licenseExpiry: driver_data?.licenseExpiry || 'N/A',
   };
 
   const items = [
     {
       key: '1',
       label: 'Genaral',
-      children: <General data={driver_data} />,
+      children: <General data={driver_data_genarale} />,
     },
     {
       key: '2',
       label: 'Driving',
-      children: <Driving data={driver_data} />,
+      children: <Driving data={driver_data_driving} />,
     },
     {
       key: '3',
@@ -133,8 +96,8 @@ function DriverInfotmation({ id }) {
         <div className="w-24 h-24 rounded-full overflow-hidden shadow">
           <img
             className="w-full h-full object-cover"
-            src="https://res.cloudinary.com/dmwcbhehi/image/upload/f_auto/q_auto/v1718014093/Driver%20profiles/Michael_Christensen_Profile_Picture_o3r40d.jpg"
-            alt=""
+            src={imageUrl(driver_data_genarale.profile_image)}
+            alt="Profile"
           />
         </div>
       </div>

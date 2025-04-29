@@ -6,7 +6,7 @@ import { imageUrl } from '../../../../Utils/server';
 const { Dragger } = Upload;
 
 const AddCarDocument = ({ form, initialValues }) => {
-  
+  console.log(initialValues)
   useEffect(() => {
     if (!initialValues) return;
     form.setFieldsValue({
@@ -15,6 +15,7 @@ const AddCarDocument = ({ form, initialValues }) => {
       e_hailing_car_permit_image: imageUrl(
         initialValues?.e_hailing_car_permit_image
       ),
+      
     });
   }, [initialValues, form]);
 

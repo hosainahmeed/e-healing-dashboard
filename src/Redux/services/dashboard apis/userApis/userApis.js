@@ -10,13 +10,10 @@ export const userApis = baseApis.injectEndpoints({
       }),
     }),
     updateUserStatus: builder.mutation({
-      query: ({ userId, status }) => ({
+      query: ({ data }) => ({
         url: `/dashboard/block-unblock-user-driver`,
         method: 'PATCH',
-        body: {
-          authId: userId,
-          isBlocked: status,
-        },
+        body: data,
       }),
     }),
     getSingleUserOrDriver: builder.query({
