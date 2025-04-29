@@ -1,44 +1,60 @@
 import React, { useState } from 'react';
-import { Table, Tag, Space, Avatar, Button, Modal, Select, message } from 'antd';
+import {
+  Table,
+  Tag,
+  Space,
+  Avatar,
+  Button,
+  Modal,
+  Select,
+  message,
+} from 'antd';
 import { UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { CgBlock } from 'react-icons/cg';
 import { IoIosWarning } from 'react-icons/io';
-import { 
+import {
   useGetAllUserOrDriverQuery,
-  useUpdateUserStatusMutation 
+  useUpdateUserStatusMutation,
 } from '../../../Redux/services/dashboard apis/userApis/userApis';
+import toast from 'react-hot-toast';
 
 const AllUsers = () => {
   const [showModal, setShowModal] = useState(false);
   const [blockUserId, setBlockUserId] = useState(null);
   const params = { role: 'USER' };
-  const { data: userData, isLoading: userDataLoading, refetch } = useGetAllUserOrDriverQuery({ params });
+  const {
+    data: userData,
+    isLoading: userDataLoading,
+    refetch,
+  } = useGetAllUserOrDriverQuery({ params });
   const [updateUserStatus] = useUpdateUserStatusMutation();
 
   const handleStatusChange = async (userId, newStatus) => {
     try {
-      await updateUserStatus({ 
-        userId, 
-        status: newStatus 
+      const res = await updateUserStatus({
+        userId,
+        status: newStatus,
       }).unwrap();
-      message.success('User status updated successfully');
+      console.log(res);
+      toast.success('User status updated successfully');
       refetch();
     } catch (error) {
-      message.error('Failed to update user status');
+      toast.error('Failed to update user status');
       console.error('Update error:', error);
     }
   };
-
+  console.log(userData);
   const users = userData?.data?.result?.map((user) => ({
-    key: user._id,
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    contactNumber: user.phoneNumber,
-    isOnline: user.isOnline,
-    status: user.userAccountStatus,
-    joined: new Date(user.createdAt).toLocaleDateString(),
+    key: user?._id,
+    id: user?._id,
+    authId: user?.authId?._id,
+    name: user?.name,
+    email: user?.email,
+    role: user?.role,
+    contactNumber: user?.phoneNumber,
+    isOnline: user?.isOnline,
+    status: user?.userAccountStatus,
+    joined: new Date(user?.createdAt).toLocaleDateString(),
     avatar: null,
   }));
 
@@ -83,10 +99,10 @@ const AllUsers = () => {
         <Select
           defaultValue={status}
           style={{ width: 120 }}
-          onChange={(value) => handleStatusChange(record.id, value)}
+          onChange={(value) => handleStatusChange(record?.authId, value)}
         >
-          <Select.Option value="verified">Verified</Select.Option>
-          <Select.Option value="unverified">Unverified</Select.Option>
+          <Select.Option value={true}>Verified</Select.Option>
+          <Select.Option value={false}>Unverified</Select.Option>
         </Select>
       ),
     },

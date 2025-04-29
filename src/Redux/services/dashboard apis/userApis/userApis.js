@@ -11,9 +11,12 @@ export const userApis = baseApis.injectEndpoints({
     }),
     updateUserStatus: builder.mutation({
       query: ({ userId, status }) => ({
-        url: `/dashboard/update-user-status/${userId}`,
+        url: `/dashboard/block-unblock-user-driver`,
         method: 'PATCH',
-        body: { status: status },
+        body: {
+          authId: userId,
+          isBlocked: status,
+        },
       }),
     }),
     getSingleUserOrDriver: builder.query({
