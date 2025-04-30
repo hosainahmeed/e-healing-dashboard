@@ -10,6 +10,7 @@ import {
   message,
 } from 'antd';
 import { FaCameraRetro, FaPlus, FaUser } from 'react-icons/fa';
+import moment from 'moment';
 
 const { Step } = Steps;
 
@@ -25,7 +26,10 @@ const DriverRegistrationForm = () => {
     idOrPassportNo: 'passport1212',
     drivingLicenseNo: 'drivingLicenseNo12123',
     licenseType: 'licenseType',
-    licenseExpiry: new Date('2025-12-31').toISOString(),
+    licenseExpiry: moment(2025 - 12 - 31),
+    id_or_passport_image: null,
+    psv_license_image: null,
+    driving_license_image: null,
   });
 
   const [imageUrl, setImageUrl] = useState(null);
@@ -69,21 +73,21 @@ const DriverRegistrationForm = () => {
     try {
       const values = await form.validateFields();
       const finalData = { ...formData, ...values };
-
+console.log(finalData)
       const submitFormData = new FormData();
 
       if (imageFile) {
-        submitFormData.append('avatar', imageFile);
+        submitFormData.append('profile_image', imageFile);
       }
 
       Object.keys(finalData).forEach((key) => {
-        if (key !== 'avatar' && finalData[key] !== undefined) {
+        if (key !== 'profile_image' && finalData[key] !== undefined) {
           if (finalData[key] && finalData[key].format) {
             submitFormData.append(key, finalData[key].format('YYYY-MM-DD'));
           } else if (
-            key === 'nationalIdDoc' ||
-            key === 'psvLicense' ||
-            key === 'drivingLicenseDoc'
+            key === 'id_or_passport_image' ||
+            key === 'psv_license_image' ||
+            key === 'driving_license_image'
           ) {
             if (finalData[key] && finalData[key].fileList) {
               finalData[key].fileList.forEach((file, index) => {
@@ -136,7 +140,7 @@ const DriverRegistrationForm = () => {
     e.stopPropagation();
     setImageUrl(null);
     setImageFile(null);
-    form.setFieldsValue({ avatar: undefined });
+    form.setFieldsValue({ profile_image: undefined });
   };
 
   const uploadButton = (
@@ -145,7 +149,7 @@ const DriverRegistrationForm = () => {
         <div className="relative w-24 h-24">
           <img
             src={imageUrl}
-            alt="avatar"
+            alt="profile_image"
             className="w-full h-full rounded-full object-cover"
           />
 
@@ -197,7 +201,7 @@ const DriverRegistrationForm = () => {
         {current === 0 && (
           <div>
             <div className="flex justify-center mb-6">
-              <Form.Item name="avatar" className="mb-6">
+              <Form.Item name="profile_image" className="mb-6">
                 <Upload
                   listType="picture"
                   className="avatar-uploader"
