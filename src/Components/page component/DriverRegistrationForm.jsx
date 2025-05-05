@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Steps,
-  Form,
-  Input,
-  Upload,
-  Select,
-  DatePicker,
-  message,
-} from 'antd';
+import { Button, Steps, Form, Input, Upload, Select, DatePicker } from 'antd';
 import { FaCameraRetro, FaPlus, FaUser } from 'react-icons/fa';
 import moment from 'moment';
+import { imageUrl } from '../../Utils/server';
+import toast from 'react-hot-toast';
 
 const { Step } = Steps;
 
@@ -27,12 +20,21 @@ const DriverRegistrationForm = () => {
     drivingLicenseNo: 'drivingLicenseNo12123',
     licenseType: 'licenseType',
     licenseExpiry: moment(2025 - 12 - 31),
-    id_or_passport_image: null,
-    psv_license_image: null,
-    driving_license_image: null,
+    id_or_passport_image: imageUrl(
+      'uploads\\id_or_passport_image\\1742352551569-image.png'
+    ),
+    psv_license_image: imageUrl(
+      'uploads\\psv_license_image\\1742352551571-image.png'
+    ),
+    driving_license_image: imageUrl(
+      'uploads\\driving_license_image\\1742352551572-image.png'
+    ),
+    profile_image: imageUrl(
+      'uploads\\profile_image\\1742352551569-sensei-2.png'
+    ),
   });
 
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imgUrl, setImageUrl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
 
   const steps = [
@@ -73,7 +75,7 @@ const DriverRegistrationForm = () => {
     try {
       const values = await form.validateFields();
       const finalData = { ...formData, ...values };
-console.log(finalData)
+      console.log(finalData);
       const submitFormData = new FormData();
 
       if (imageFile) {
@@ -105,14 +107,14 @@ console.log(finalData)
       console.log('Form data submitted:');
       console.log(submitFormData);
 
-      message.success('Driver added successfully!');
+      toast.success('Driver added successfully!');
     } catch (error) {
       console.log('Validation failed:', error);
     }
   };
 
   const handleCancel = () => {
-    message.info('Registration cancelled');
+    toast.info('Registration cancelled');
     form.resetFields();
     setCurrent(0);
     setFormData({});
@@ -145,10 +147,10 @@ console.log(finalData)
 
   const uploadButton = (
     <div className="flex flex-col items-center border border-gray-600 border-dashed rounded-full w-24 h-24 justify-center">
-      {imageUrl ? (
+      {imgUrl ? (
         <div className="relative w-24 h-24">
           <img
-            src={imageUrl}
+            src={imgUrl}
             alt="profile_image"
             className="w-full h-full rounded-full object-cover"
           />
@@ -315,19 +317,19 @@ console.log(finalData)
 
         {current === 2 && (
           <div>
-            <Form.Item name="nationalIdDoc" label="National ID/Passport">
+            <Form.Item name="id_or_passport_image" label="National ID/Passport">
               <Upload listType="picture-card" beforeUpload={() => false}>
                 {documentUploadButton}
               </Upload>
             </Form.Item>
 
-            <Form.Item name="psvLicense" label="PSV License">
+            <Form.Item name="psv_license_image" label="PSV License">
               <Upload listType="picture-card" beforeUpload={() => false}>
                 {documentUploadButton}
               </Upload>
             </Form.Item>
 
-            <Form.Item name="drivingLicenseDoc" label="Driving License">
+            <Form.Item name="driving_license_image" label="Driving License">
               <Upload listType="picture-card" beforeUpload={() => false}>
                 {documentUploadButton}
               </Upload>

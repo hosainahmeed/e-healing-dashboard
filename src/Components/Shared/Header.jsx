@@ -43,7 +43,7 @@ function Header() {
   );
 
   return (
-    <div className="px-10  h-16 flex justify-between items-center">
+    <div className="px-10 h-16 flex justify-between items-center">
       <img className="h-12" src={logo} alt="Dudu" />
       <div className="flex items-center  gap-4 text-2xl">
         <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">

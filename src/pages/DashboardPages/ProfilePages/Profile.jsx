@@ -67,15 +67,15 @@ const Profile = () => {
       </div>
 
       {/* Tabs Section */}
-      <div className="w-full center-center my-3">
+      <div className="mx-auto p-1 border rounded-sm !w-fit center-center my-3">
         {Tabs.map((item) => (
           <Button
             key={item}
             style={{ width: '200px', justifyContent: 'center' }}
             className={`${
               item === tab
-                ? '!border-0 !rounded-none !font-semibold !text-[#3872F0] !border-b-2 !border-black !bg-transparent'
-                : '!border-0 !rounded-none !text-black !border-b-1 !border-black !bg-transparent'
+                ? '!bg-[var(--bg-pink-high)] !text-white !border-0 !rounded-sm'
+                : '!border-0 !rounded-none !text-black !border-black !bg-transparent'
             }`}
             onClick={() => setTab(item)}
           >

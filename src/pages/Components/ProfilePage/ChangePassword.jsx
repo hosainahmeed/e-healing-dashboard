@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Form, Input, message, Spin } from 'antd';
-// import { usePatchNewPasswordMutation } from '../../Redux/services/authApis';
+import { usePatchNewPasswordMutation } from '../../../../../navid-dashboard/src/Redux/services/authApis';
 
 const ChangePassword = () => {
   const [form] = Form.useForm();
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  // const [setNewPassword, { isLoading: isNewPassChange }] =
-  //   usePatchNewPasswordMutation({});
+  const [setNewPassword, { isLoading: isNewPassChange }] =
+    usePatchNewPasswordMutation({});
 
   const onFinish = async (values) => {
     const ChangePasswordDatas = {
@@ -17,7 +14,7 @@ const ChangePassword = () => {
       confirmPassword: values.confirmPassword,
     };
     try {
-      // await setNewPassword(ChangePasswordDatas).unwrap();
+      await setNewPassword(ChangePasswordDatas).unwrap();
       message.success('Password Changed successfully.');
     } catch (error) {
       console.error('Failed to change password:', error);
@@ -32,13 +29,12 @@ const ChangePassword = () => {
       layout="vertical"
     >
       <Form.Item
-        type={showOldPassword ? 'text' : 'password'}
         name="oldPassword"
         label={<span className="text-black">Old Password</span>}
         rules={[
           {
             required: true,
-            message: 'name is required',
+            message: 'old password is required',
           },
         ]}
       >
@@ -46,7 +42,7 @@ const ChangePassword = () => {
           style={{
             width: '100%',
             height: 40,
-            border: 'none',
+            border: '1px solid #222',
             borderRadius: '5px',
             color: '#111',
             backgroundColor: '#fff',
@@ -62,7 +58,7 @@ const ChangePassword = () => {
         rules={[
           {
             required: true,
-            message: 'name is required',
+            message: 'New password is required',
           },
         ]}
       >
@@ -70,7 +66,7 @@ const ChangePassword = () => {
           style={{
             width: '100%',
             height: 40,
-            border: 'none',
+            border: '1px solid #222',
             borderRadius: '5px',
             color: '#111',
             backgroundColor: '#fff',
@@ -86,7 +82,7 @@ const ChangePassword = () => {
         rules={[
           {
             required: true,
-            message: 'phone number is required',
+            message: 'Confirm Password is required',
           },
         ]}
       >
@@ -94,7 +90,7 @@ const ChangePassword = () => {
           style={{
             width: '100%',
             height: 40,
-            border: 'none',
+            border: '1px solid #222',
             borderRadius: '5px',
             color: '#111',
             backgroundColor: '#fff',
@@ -108,10 +104,14 @@ const ChangePassword = () => {
         type="primary"
         htmlType="submit"
         // disabled={isNewPassChange}
-        className="!bg-[#3872F0] !hover:bg-[#3872F0] active:bg-[#3872F0] w-full"
+        style={{
+          backgroundColor: 'var(--bg-pink-high)',
+          color: '#fff',
+          height: 40,
+        }}
+        className=" w-full"
       >
-        {/* {isNewPassChange ? <Spin /> : "Update password"} */}
-        update pass
+        {isNewPassChange ? <Spin /> : 'Update password'}
       </Button>
     </Form>
   );

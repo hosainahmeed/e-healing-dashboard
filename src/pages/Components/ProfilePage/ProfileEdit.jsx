@@ -37,7 +37,9 @@ const ProfileEdit = ({ image, data }) => {
   console.log(data);
   return (
     <div>
-      <p className="text-[#3872F0] text-3xl text-center">Edit Profile</p>
+      <p className="text-[var(--bg-pink-high)] text-3xl text-center">
+        Edit Your Profile
+      </p>
       <Form
         className="text-white"
         requiredMark={false}
@@ -59,7 +61,7 @@ const ProfileEdit = ({ image, data }) => {
             style={{
               width: '100%',
               height: 40,
-              border: 'none',
+              border: '1px solid #222',
               borderRadius: '5px',
               color: '#111',
               backgroundColor: '#fff',
@@ -78,7 +80,7 @@ const ProfileEdit = ({ image, data }) => {
             style={{
               width: '100%',
               height: 40,
-              border: 'none',
+              border: '1px solid #222',
               borderRadius: '5px',
               color: '#111',
               backgroundColor: '#fff',
@@ -100,7 +102,7 @@ const ProfileEdit = ({ image, data }) => {
             style={{
               width: '100%',
               height: 40,
-              border: 'none',
+              border: '1px solid #222',
               borderRadius: '5px',
               color: '#111',
               backgroundColor: '#fff',
@@ -112,10 +114,14 @@ const ProfileEdit = ({ image, data }) => {
         </Form.Item>
 
         <Button
-          type="primary"
           htmlType="submit"
           disabled={isProfileUpdate}
-          className="!bg-[#3872F0] !hover:bg-[#3872F0] active:bg-[#3872F0] w-full"
+          style={{
+            backgroundColor: 'var(--bg-pink-high)',
+            color: '#fff',
+            height: 40,
+          }}
+          className="!bg-[var(--bg-pink-high] !hover:bg-[var(--bg-pink-low] w-full"
         >
           {isProfileUpdate ? <Spin /> : 'Update Profile'}
         </Button>
