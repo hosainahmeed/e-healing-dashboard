@@ -5,25 +5,28 @@ import { FaPlus } from 'react-icons/fa';
 import { Modal } from 'antd';
 import DriverRegistrationForm from '../../../Components/page component/DriverRegistrationForm';
 import DriverTable from '../../../Components/tables/driver/DriverTable';
+import { Link } from 'react-router-dom';
 
 function DriverManage() {
-  const [showModal, setShowModal] = useState(true);
+  // const [showModal, setShowModal] = useState(true);
   return (
     <div>
       <div className="flex items-center justify-between">
         <PageHeading title={'Driver'} />
-        <Button
-          style={{ marginTop: '1rem' }}
-          text={'Add New Driver'}
-          icon={<FaPlus />}
-          classNames={
-            'button-white !bg-[var(--bg-pink-high)] !text-[var(--color-white)]'
-          }
-          type={'button'}
-          handler={() => setShowModal(true)}
-        />
+        <Link to={'/add-car'}>
+          <Button
+            style={{ marginTop: '1rem' }}
+            text={'Add New Driver'}
+            icon={<FaPlus />}
+            classNames={
+              'button-white !bg-[var(--bg-pink-high)] !text-[var(--color-white)]'
+            }
+            type={'button'}
+            // handler={() => setShowModal(true)}
+          />
+        </Link>
       </div>
-      <Modal
+      {/* <Modal
         width={800}
         open={showModal}
         footer={null}
@@ -35,7 +38,7 @@ function DriverManage() {
         }
       >
         <DriverRegistrationForm />
-      </Modal>
+      </Modal> */}
       <div className="mt-4">
         <DriverTable />
       </div>

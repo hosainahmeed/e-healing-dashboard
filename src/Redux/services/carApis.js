@@ -25,11 +25,11 @@ export const carApis = baseApis.injectEndpoints({
       }),
       invalidatesTags: ['car'],
     }),
-    getSingleCardData: builder.query({
-      query: ({ id }) => ({
-        url: `/car/get-car`,
+    getSingleCarData: builder.query({
+      query: ({ carId }) => ({
+        url: '/car/get-car',
         method: 'GET',
-        params: { carId: id },
+        params: { carId },
       }),
       invalidatesTags: ['car'],
     }),
@@ -48,6 +48,6 @@ export const {
   useGetAllCarsQuery,
   useCreateNewCarMutation,
   useDeleteCarMutation,
-  useGetSingleCardDataQuery,
+  useGetSingleCarDataQuery,
   useUpdateCarMutation,
 } = carApis;

@@ -1,38 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Steps, Form, Input, Upload, Select, DatePicker } from 'antd';
 import { FaCameraRetro, FaPlus, FaUser } from 'react-icons/fa';
 import moment from 'moment';
 import { imageUrl } from '../../Utils/server';
 import toast from 'react-hot-toast';
+import { useLocation } from 'react-router-dom';
+import { useGetDriverQuery } from '../../Redux/services/dashboard apis/userApis/driverApis';
 
 const { Step } = Steps;
 
 const DriverRegistrationForm = () => {
+  const location = useLocation();
+  const id = location.state;
+  const { data, isLoading } = useGetDriverQuery({ driverId: id });
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
+
   const [formData, setFormData] = useState({
-    name: 'Hosain',
-    email: 'emil@gmail.co',
-    address: 'Dhaka',
-    password: '23123',
-    phoneNumber: '23123',
-    idOrPassportNo: 'passport1212',
-    drivingLicenseNo: 'drivingLicenseNo12123',
-    licenseType: 'licenseType',
-    licenseExpiry: moment(2025 - 12 - 31),
-    id_or_passport_image: imageUrl(
-      'uploads\\id_or_passport_image\\1742352551569-image.png'
-    ),
-    psv_license_image: imageUrl(
-      'uploads\\psv_license_image\\1742352551571-image.png'
-    ),
-    driving_license_image: imageUrl(
-      'uploads\\driving_license_image\\1742352551572-image.png'
-    ),
-    profile_image: imageUrl(
-      'uploads\\profile_image\\1742352551569-sensei-2.png'
-    ),
+    name: '',
+    email: '',
+    address: '',
+    phoneNumber: '',
+    idOrPassportNo: '',
+    drivingLicenseNo: '',
+    licenseType: '',
+    licenseExpiry: null,
+    id_or_passport_image: null,
+    psv_license_image: null,
+    driving_license_image: null,
+    profile_image: null,
   });
+  useEffect(() => {
+    if (data) {
+      const fetchedData = data?.data;
+      console.log(fetchedData)
+      setFormData({
+        name: fetchedData.name,
+        email: fetchedData.email,
+        address: fetchedData.address,
+        phoneNumber: fetchedData.phoneNumber,
+        idOrPassportNo: fetchedData.idOrPassportNo,
+        drivingLicenseNo: fetchedData.drivingLicenseNo,
+        licenseType: fetchedData.licenseType,
+        licenseExpiry: moment(fetchedData.licenseExpiry),
+        id_or_passport_image: imageUrl(fetchedData.id_or_passport_image),
+        psv_license_image: imageUrl(fetchedData.psv_license_image),
+        driving_license_image: imageUrl(fetchedData.driving_license_image),
+        profile_image: imageUrl(fetchedData.profile_image),
+      });
+    }
+  }, [data]);
 
   const [imgUrl, setImageUrl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -237,11 +254,13 @@ const DriverRegistrationForm = () => {
             </Form.Item>
 
             <Form.Item
-              name="password"
-              label="Password"
-              rules={[{ required: true, message: 'Please enter password' }]}
+              name="phoneNumber"
+              label="Contact No"
+              rules={[
+                { required: true, message: 'Please enter contact number' },
+              ]}
             >
-              <Input.Password placeholder="Password" size="large" />
+              <Input placeholder="Contact number" size="large" />
             </Form.Item>
 
             <Form.Item
@@ -250,16 +269,6 @@ const DriverRegistrationForm = () => {
               rules={[{ required: true, message: 'Please enter address' }]}
             >
               <Input placeholder="Address" size="large" />
-            </Form.Item>
-
-            <Form.Item
-              name="phoneNumber"
-              label="Contact No"
-              rules={[
-                { required: true, message: 'Please enter contact number' },
-              ]}
-            >
-              <Input placeholder="Contact number" size="large" />
             </Form.Item>
           </div>
         )}
@@ -302,7 +311,7 @@ const DriverRegistrationForm = () => {
 
             <Form.Item
               name="licenseExpiry"
-              label="License Expire"
+              label="License Expiry"
               rules={[{ required: true, message: 'Please select expiry date' }]}
             >
               <DatePicker

@@ -6,7 +6,7 @@ import { imageUrl } from '../../../../Utils/server';
 const { Dragger } = Upload;
 
 const AddCarDocument = ({ form, initialValues }) => {
-  console.log(initialValues)
+  console.log(initialValues);
   useEffect(() => {
     if (!initialValues) return;
     form.setFieldsValue({
@@ -15,7 +15,6 @@ const AddCarDocument = ({ form, initialValues }) => {
       e_hailing_car_permit_image: imageUrl(
         initialValues?.e_hailing_car_permit_image
       ),
-      
     });
   }, [initialValues, form]);
 
@@ -36,7 +35,6 @@ const AddCarDocument = ({ form, initialValues }) => {
       message.info('File removed');
     },
   });
-  console.log(initialValues?.car_grant_image);
   return (
     <div>
       <h3 className="text-lg font-medium mb-4">Vehicle Documents</h3>

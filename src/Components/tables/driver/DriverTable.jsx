@@ -130,7 +130,7 @@ const DriverTable = () => {
           <Button
             onClick={() => {
               setShowDriverModal(true);
-              setSelectedId(record?.key);
+              setSelectedId(record?.id);
             }}
             className="ant-btn ant-btn-primary"
           >

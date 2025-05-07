@@ -12,7 +12,6 @@ const onChange = (key) => {
 };
 function DriverInfotmation({ id }) {
   const { data, isLoading } = useGetDriverQuery({ id });
-
   if (isLoading) {
     return (
       <div>
@@ -45,8 +44,8 @@ function DriverInfotmation({ id }) {
   }
 
   const driver_data = data?.data;
-  console.log(driver_data);
   const driver_data_genarale = {
+    driver_id: id,
     name: driver_data?.name || 'N/A',
     email: driver_data?.email || 'N/A',
     role: driver_data?.role || 'N/A',

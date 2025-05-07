@@ -21,7 +21,7 @@ import AddNewCar from '../Components/page component/CarManage/AddNewCar';
 import AddCarImage from '../Components/page component/CarManage/add_car_steps/AddCarImage';
 import AddCarGeneralInfo from '../Components/page component/CarManage/add_car_steps/AddCarGeneralInfo';
 import FrequentlyAskedQuestions from '../pages/DashboardPages/FrequentlyAskedQuestions/FrequentlyAskedQuestions';
-
+import DriverRegistrationForm from '../Components/page component/DriverRegistrationForm';
 
 export const Routes = createBrowserRouter([
   {
@@ -63,6 +63,10 @@ export const Routes = createBrowserRouter([
       {
         path: '/car-management/new-car-add',
         element: <AddNewCar />,
+      },
+      {
+        path: '/add-car',
+        element: <DriverRegistrationForm />,
       },
       {
         path: '/car-management/edit-car/:id',
