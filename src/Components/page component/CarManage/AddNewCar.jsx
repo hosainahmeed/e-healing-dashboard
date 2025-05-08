@@ -174,6 +174,9 @@ function AddNewCar() {
           submitFormData.append('car_image', file);
         });
       }
+      if (id) {
+        submitFormData.append('carId', id);
+      }
 
       Object.entries(allData).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
@@ -199,8 +202,11 @@ function AddNewCar() {
           }
         }
       });
-
-      await addNewCar({ submitFormData });
+      if (id) {
+        await updateCar({ submitFormData });
+      } else {
+        await addNewCar({ submitFormData });
+      }
 
       toast.success('Car added successfully!');
       form.resetFields();
@@ -212,7 +218,7 @@ function AddNewCar() {
       setDocumentInfo({});
     } catch (error) {
       console.error('Submission failed:', error);
-      message.error('Failed to add car. Please try again.');
+      toast.error('Failed to add car. Please try again.');
     } finally {
       setLoading(false);
     }

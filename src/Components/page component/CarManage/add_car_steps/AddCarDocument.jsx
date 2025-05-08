@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+// add car doucment data
+
+import React, { useEffect, useState } from 'react';
 import { Form, Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { imageUrl } from '../../../../Utils/server';
@@ -6,34 +8,97 @@ import { imageUrl } from '../../../../Utils/server';
 const { Dragger } = Upload;
 
 const AddCarDocument = ({ form, initialValues }) => {
+  const [grantFileList, setGrantFileList] = useState([]);
+  const [insuranceFileList, setInsuranceFileList] = useState([]);
+  const [permitFileList, setPermitFileList] = useState([]);
+
   useEffect(() => {
     if (!initialValues) return;
+
+    const setInitialFileList = (url, setState) => {
+      if (url) {
+        setState([
+          {
+            uid: '-1', // Unique ID, can be static for initial values
+            name: url.split('\\').pop() || 'document',
+            status: 'done',
+            url: imageUrl(url),
+          },
+        ]);
+      } else {
+        setState([]);
+      }
+    };
+
+    setInitialFileList(initialValues?.car_grant_image, setGrantFileList);
+    setInitialFileList(
+      initialValues?.car_insurance_image,
+      setInsuranceFileList
+    );
+    setInitialFileList(
+      initialValues?.e_hailing_car_permit_image,
+      setPermitFileList
+    );
+
     form.setFieldsValue({
-      car_grant_image: imageUrl(initialValues?.car_grant_image),
-      car_insurance_image: imageUrl(initialValues?.car_insurance_image),
-      e_hailing_car_permit_image: imageUrl(
-        initialValues?.e_hailing_car_permit_image
-      ),
+      car_grant_image: initialValues?.car_grant_image
+        ? [
+            {
+              uid: '-1',
+              name: initialValues?.car_grant_image.split('\\').pop() || 'grant',
+            },
+          ]
+        : undefined,
+      car_insurance_image: initialValues?.car_insurance_image
+        ? [
+            {
+              uid: '-1',
+              name:
+                initialValues?.car_insurance_image.split('\\').pop() ||
+                'insurance',
+            },
+          ]
+        : undefined,
+      e_hailing_car_permit_image: initialValues?.e_hailing_car_permit_image
+        ? [
+            {
+              uid: '-1',
+              name:
+                initialValues?.e_hailing_car_permit_image.split('\\').pop() ||
+                'permit',
+            },
+          ]
+        : undefined,
     });
   }, [initialValues, form]);
 
-  const getUploadProps = (fieldName) => ({
+  const handleDocumentChange = (info, fieldName, setState) => {
+    const { fileList } = info;
+    setState(fileList);
+    if (fileList.length > 0) {
+      const file = fileList[0].originFileObj;
+      const fieldValue = { fileList: [info.file] }; // Keep the file object
+      form.setFieldsValue({ [fieldName]: fieldValue });
+    } else {
+      form.setFieldsValue({ [fieldName]: undefined });
+    }
+  };
+
+  const handleRemove = (file, fieldName, setState) => {
+    setState([]);
+    form.setFieldsValue({ [fieldName]: undefined });
+    message.info('File removed');
+  };
+
+  const getDraggerProps = (fieldName, fileListState, setFileListState) => ({
     beforeUpload: () => false,
     maxCount: 1,
     accept: '.pdf,.jpg,.jpeg,.png',
-    onChange: (info) => {
-      const { fileList } = info;
-      if (fileList.length > 0) {
-        fileList[0].originFileObj;
-        const fieldValue = { fileList };
-        form.setFieldsValue({ [fieldName]: fieldValue });
-      }
-    },
-    onRemove: () => {
-      form.setFieldsValue({ [fieldName]: undefined });
-      message.info('File removed');
-    },
+    fileList: fileListState,
+    onChange: (info) => handleDocumentChange(info, fieldName, setFileListState),
+    onRemove: (file) => handleRemove(file, fieldName, setFileListState),
   });
+
   return (
     <div>
       <h3 className="text-lg font-medium mb-4">Vehicle Documents</h3>
@@ -49,7 +114,13 @@ const AddCarDocument = ({ form, initialValues }) => {
               },
             ]}
           >
-            <Dragger {...getUploadProps('car_grant_image')}>
+            <Dragger
+              {...getDraggerProps(
+                'car_grant_image',
+                grantFileList,
+                setGrantFileList
+              )}
+            >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
@@ -72,7 +143,13 @@ const AddCarDocument = ({ form, initialValues }) => {
               },
             ]}
           >
-            <Dragger {...getUploadProps('car_insurance_image')}>
+            <Dragger
+              {...getDraggerProps(
+                'car_insurance_image',
+                insuranceFileList,
+                setInsuranceFileList
+              )}
+            >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
@@ -95,7 +172,13 @@ const AddCarDocument = ({ form, initialValues }) => {
               },
             ]}
           >
-            <Dragger {...getUploadProps('e_hailing_car_permit_image')}>
+            <Dragger
+              {...getDraggerProps(
+                'e_hailing_car_permit_image',
+                permitFileList,
+                setPermitFileList
+              )}
+            >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
