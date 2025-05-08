@@ -29,7 +29,7 @@ export const carApis = baseApis.injectEndpoints({
       query: ({ carId }) => ({
         url: '/car/get-car',
         method: 'GET',
-        params: { carId },
+        params: {carId},
       }),
       invalidatesTags: ['car'],
     }),

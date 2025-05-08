@@ -7,11 +7,8 @@ import Documents from './DrivingInformation Parts/Documents';
 import Statics from './DrivingInformation Parts/Statics';
 import { useGetDriverQuery } from '../../Redux/services/dashboard apis/userApis/driverApis';
 import { imageUrl } from '../../Utils/server';
-const onChange = (key) => {
-  console.log(key);
-};
 function DriverInfotmation({ id }) {
-  const { data, isLoading } = useGetDriverQuery({ id });
+  const { data, isLoading } = useGetDriverQuery({ driverId: id });
   if (isLoading) {
     return (
       <div>
@@ -43,7 +40,7 @@ function DriverInfotmation({ id }) {
     );
   }
 
-  const driver_data = data?.data;
+  const driver_data = data.data;
   const driver_data_genarale = {
     driver_id: id,
     name: driver_data?.name || 'N/A',
@@ -100,7 +97,7 @@ function DriverInfotmation({ id }) {
           />
         </div>
       </div>
-      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <Tabs defaultActiveKey="1" items={items} />
     </div>
   );
 }

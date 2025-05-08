@@ -24,7 +24,7 @@ function AddNewCar() {
   const [addNewCar] = useCreateNewCarMutation();
   const [initialData, setInitialData] = useState({});
   const { data: singleCarData, isLoading: singleCarLoading } =
-    useGetSingleCarDataQuery({ id });
+    useGetSingleCarDataQuery({ carId: id });
   const [updateCar, { isLoading: isUpdating }] = useUpdateCarMutation();
 
   const [imageData, setImageData] = useState({
@@ -169,7 +169,6 @@ function AddNewCar() {
         ...documentInfo,
         ...values,
       };
-      console.log('hosain ahmed', imageData.car_image);
       if (imageData.car_image && Array.isArray(imageData.car_image)) {
         imageData.car_image.forEach((file) => {
           submitFormData.append('car_image', file);

@@ -6,7 +6,6 @@ import { imageUrl } from '../../../../Utils/server';
 const { Dragger } = Upload;
 
 const AddCarDocument = ({ form, initialValues }) => {
-  console.log(initialValues);
   useEffect(() => {
     if (!initialValues) return;
     form.setFieldsValue({

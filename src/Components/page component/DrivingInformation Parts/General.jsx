@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function General({ data }) {
-  console.log(data?.driver_id);
   return (
     <div>
       <h1>{data.driver_id}</h1>

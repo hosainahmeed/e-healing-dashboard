@@ -3,7 +3,6 @@ import { Cell, Pie, PieChart } from 'recharts';
 import Loader from '../Shared/Loaders/Loader';
 
 const ActivityStatisticsChart = ({ activity }) => {
-  console.log(activity);
   const datas = [
     { name: ' Active User', value: activity?.onlineUser },
     { name: 'Active Driver', value: activity?.onlineDriver },

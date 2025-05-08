@@ -33,7 +33,6 @@ const DriverRegistrationForm = () => {
   useEffect(() => {
     if (data) {
       const fetchedData = data?.data;
-      console.log(fetchedData)
       setFormData({
         name: fetchedData.name,
         email: fetchedData.email,
@@ -92,7 +91,6 @@ const DriverRegistrationForm = () => {
     try {
       const values = await form.validateFields();
       const finalData = { ...formData, ...values };
-      console.log(finalData);
       const submitFormData = new FormData();
 
       if (imageFile) {
@@ -120,10 +118,6 @@ const DriverRegistrationForm = () => {
           }
         }
       });
-
-      console.log('Form data submitted:');
-      console.log(submitFormData);
-
       toast.success('Driver added successfully!');
     } catch (error) {
       console.log('Validation failed:', error);

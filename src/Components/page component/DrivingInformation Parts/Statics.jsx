@@ -8,10 +8,6 @@ import trip_distance from '../../../assets/icons/trip_distance.svg';
 
 function Statics({ data }) {
   const { get_rating, total_rating, driving_info } = data.statics;
-
-  const onChange = (key) => {
-    console.log('Selected tab:', key);
-  };
   const renderStats = (period) => {
     const stats = driving_info[period];
     return (

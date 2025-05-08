@@ -56,10 +56,8 @@ const DriverInfo = ({ driver }) => {
 
 const handleDeleteCar = async (carId, deleteCar) => {
   try {
-    console.log(`Car with ID: ${carId} is being deleted.`);
     const id = { carId };
     const res = await deleteCar(id).unwrap();
-    console.log(res);
     if (res.success) {
       toast.success(res.message);
     }
