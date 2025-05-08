@@ -5,14 +5,25 @@ import { CgBlock } from 'react-icons/cg';
 import { IoIosWarning, IoIosMail } from 'react-icons/io';
 import {
   useGetAllUserOrDriverQuery,
+  useGetSingleUserOrDriverQuery,
   useUpdateUserStatusMutation,
+  useUserTripStatesQuery,
 } from '../../../Redux/services/dashboard apis/userApis/userApis';
 import toast from 'react-hot-toast';
 const AllUsers = ({ recentUser }) => {
   const [showModal, setShowModal] = useState(false);
   const [blockUserId, setBlockUserId] = useState(null);
   const [isUserBlock, setUserBlock] = useState(false);
-
+  const [userDetails, setUserDetails] = useState(false);
+  const [userID, setUserID] = useState(null);
+  const Tabs = ['User Statics', 'User Documents'];
+  const [tab, setTab] = useState(Tabs[0]);
+  const { data: singleUser, isLoading: singleUserDataLoading } =
+    useGetSingleUserOrDriverQuery({ id: userID });
+  const { data: statsData, isLoading: statsLoading } = useUserTripStatesQuery({
+    id: userID,
+  });
+  console.log(statsData);
   const params = { role: 'USER' };
   const {
     data: userData,
@@ -20,7 +31,12 @@ const AllUsers = ({ recentUser }) => {
     refetch,
   } = useGetAllUserOrDriverQuery({ params });
   const [updateUserStatus] = useUpdateUserStatusMutation();
-
+  const user = singleUser?.data;
+  const singleUserData = {
+    name: user?.name,
+    email: user?.email,
+  };
+  console.log(singleUserData);
   const handleStatusChange = async (userId, newStatus) => {
     // try {
     //   const res = await updateUserStatus({
@@ -114,7 +130,13 @@ const AllUsers = ({ recentUser }) => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button className="ant-btn ant-btn-primary">
+          <Button
+            onClick={() => {
+              setUserDetails(true);
+              setUserID(record.id);
+            }}
+            className="ant-btn ant-btn-primary"
+          >
             <UserOutlined />
           </Button>
           <Button
@@ -217,6 +239,66 @@ const AllUsers = ({ recentUser }) => {
             <Button onClick={() => setShowModal(false)}>Cancel</Button>
           </div>
         </div>
+      </Modal>
+      <Modal
+        centered
+        visible={userDetails}
+        onCancel={() => setUserDetails(false)}
+        footer={null}
+      >
+        {!singleUserDataLoading && !statsLoading ? (
+          <div>
+            
+          </div>
+        ) : (
+          <>
+            <div className="mx-auto p-1 border rounded-sm !w-fit center-center my-3">
+              {Tabs.map((item) => (
+                <Button
+                  key={item}
+                  style={{ width: '200px', justifyContent: 'center' }}
+                  className={`${
+                    item === tab
+                      ? '!bg-[var(--bg-pink-high)] !text-white !border-0 !rounded-sm'
+                      : '!border-0 !rounded-none !text-black !border-black !bg-transparent'
+                  }`}
+                  onClick={() => setTab(item)}
+                >
+                  {item}
+                </Button>
+              ))}
+            </div>
+
+            <div className="max-w-[700px] mx-auto bg-[var(--black-200)] p-4 rounded-md">
+              {tab === 'User Statics' ? (
+                <div className="grid grid-cols-2">
+                  <div className="pb-6 pr-6 text-center border-b border-r">
+                    <div className="text-2xl font-bold">12</div>
+                    <div className="text-gray-500 text-sm">Total Listings</div>
+                  </div>
+                  <div className="pb-6 pl-6 text-center border-b">
+                    <div className="text-2xl font-bold">3</div>
+                    <div className="text-gray-500 text-sm">Active Listings</div>
+                  </div>
+                  <div className="pt-6 pr-6 text-center border-r">
+                    <div className="text-2xl font-bold">8</div>
+                    <div className="text-gray-500 text-sm">
+                      Approved Listings
+                    </div>
+                  </div>
+                  <div className="pt-6 pl-6 text-center">
+                    <div className="text-2xl font-bold">1</div>
+                    <div className="text-gray-500 text-sm">
+                      Rejected Listings
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+          </>
+        )}
       </Modal>
     </div>
   );

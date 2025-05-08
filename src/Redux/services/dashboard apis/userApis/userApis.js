@@ -23,6 +23,13 @@ export const userApis = baseApis.injectEndpoints({
         params: { userId: id },
       }),
     }),
+    userTripStates: builder.query({
+      query: ({ id }) => ({
+        url: `/dashboard/get-user-trip-stats`,
+        method: 'GET',
+        params: { userId: id },
+      }),
+    }),
   }),
 });
 
@@ -30,4 +37,5 @@ export const {
   useGetAllUserOrDriverQuery,
   useUpdateUserStatusMutation,
   useGetSingleUserOrDriverQuery,
+  useUserTripStatesQuery
 } = userApis;
