@@ -8,7 +8,7 @@ const driverApis = baseApis.injectEndpoints({
           url: '/dashboard/get-driver',
           method: 'GET',
           params: {
-            driverId: driverId, 
+            driverId: driverId,
           },
         };
       },
@@ -21,8 +21,21 @@ const driverApis = baseApis.injectEndpoints({
           body: data,
         };
       },
-    })
+    }),
+    updateDriver: builder.mutation({
+      query: ({ data }) => {
+        return {
+          url: '/dashboard/edit-driver',
+          method: 'PATCH',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetDriverQuery,useCreateDriverMutation } = driverApis;
+export const {
+  useGetDriverQuery,
+  useCreateDriverMutation,
+  useUpdateDriverMutation,
+} = driverApis;

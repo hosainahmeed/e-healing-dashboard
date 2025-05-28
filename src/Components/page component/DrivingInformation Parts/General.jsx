@@ -25,7 +25,7 @@ function General({ data }) {
         Contact No :
         <br /> <span className="text-gray-500">{data?.phone_number}</span>
       </h1>
-      <Link to={'/add-car'} state={data.driver_id}>
+      <Link to={'/add-car'} state={data?.driver_id}>
         <Button className="!w-full hover:!bg-[var(--bg-pink-high !bg-[var(--bg-pink-high)] !text-white">
           Edit
         </Button>

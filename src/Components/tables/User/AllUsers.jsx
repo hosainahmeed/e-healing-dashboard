@@ -55,7 +55,7 @@ const AllUsers = ({ recentUser }) => {
   const userDataShowing = recentUser
     ? userData?.data?.result.slice(0, 4)
     : userData?.data?.result;
-
+console.log(userData)
   const users = userDataShowing?.map((user) => ({
     key: user?._id,
     id: user?._id,
@@ -246,9 +246,9 @@ const AllUsers = ({ recentUser }) => {
         onCancel={() => setUserDetails(false)}
         footer={null}
       >
-        {!singleUserDataLoading && !statsLoading ? (
+        {singleUserDataLoading && statsLoading ? (
           <div>
-            
+            loading
           </div>
         ) : (
           <>
