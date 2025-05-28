@@ -5,7 +5,10 @@ import moment from 'moment';
 import { imageUrl } from '../../Utils/server';
 import toast from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
-import { useGetDriverQuery } from '../../Redux/services/dashboard apis/userApis/driverApis';
+import {
+  useCreateDriverMutation,
+  useGetDriverQuery,
+} from '../../Redux/services/dashboard apis/userApis/driverApis';
 
 const { Step } = Steps;
 
@@ -13,6 +16,7 @@ const DriverRegistrationForm = () => {
   const location = useLocation();
   const id = location.state;
   const { data, isLoading } = useGetDriverQuery({ driverId: id });
+  const [createDriver] = useCreateDriverMutation();
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
 
@@ -20,6 +24,7 @@ const DriverRegistrationForm = () => {
     name: '',
     email: '',
     address: '',
+    password: '',
     phoneNumber: '',
     idOrPassportNo: '',
     drivingLicenseNo: '',
@@ -95,6 +100,8 @@ const DriverRegistrationForm = () => {
 
       if (imageFile) {
         submitFormData.append('profile_image', imageFile);
+      } else {
+        submitFormData.append('profile_image', finalData.profile_image);
       }
 
       Object.keys(finalData).forEach((key) => {
@@ -107,9 +114,9 @@ const DriverRegistrationForm = () => {
             key === 'driving_license_image'
           ) {
             if (finalData[key] && finalData[key].fileList) {
-              finalData[key].fileList.forEach((file, index) => {
+              finalData[key].fileList.forEach((file) => {
                 if (file.originFileObj) {
-                  submitFormData.append(`${key}_${index}`, file.originFileObj);
+                  submitFormData.append(`${key}`, file.originFileObj);
                 }
               });
             }
@@ -118,7 +125,13 @@ const DriverRegistrationForm = () => {
           }
         }
       });
-      toast.success('Driver added successfully!');
+
+      const res = await createDriver({ data: submitFormData }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message || 'Driver added successfully!');
+      } else {
+        toast.error(res?.message || 'Failed to add driver!');
+      }
     } catch (error) {
       console.log('Validation failed:', error);
     }
@@ -246,6 +259,18 @@ const DriverRegistrationForm = () => {
             >
               <Input placeholder="Email address" size="large" />
             </Form.Item>
+            {!id && (
+              <Form.Item
+                name="password"
+                label="Password"
+                rules={[
+                  { required: true, message: 'Please enter password' },
+                  { min: 6, message: 'Password must be at least 6 characters' },
+                ]}
+              >
+                <Input.Password placeholder="Password" size="large" />
+              </Form.Item>
+            )}
 
             <Form.Item
               name="phoneNumber"
@@ -379,7 +404,11 @@ const DriverRegistrationForm = () => {
             className="px-8 !bg-purple-600"
             onClick={current < steps.length - 1 ? handleNext : handleSubmit}
           >
-            {current < steps.length - 1 ? 'Next' : 'Save'}
+            {current < steps.length - 1
+              ? 'Next'
+              : isLoading
+              ? 'Loading...'
+              : 'Submit'}
           </Button>
         </div>
       </div>

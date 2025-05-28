@@ -13,7 +13,16 @@ const driverApis = baseApis.injectEndpoints({
         };
       },
     }),
+    createDriver: builder.mutation({
+      query: ({ data }) => {
+        return {
+          url: '/dashboard/post-driver',
+          method: 'POST',
+          body: data,
+        };
+      },
+    })
   }),
 });
 
-export const { useGetDriverQuery } = driverApis;
+export const { useGetDriverQuery,useCreateDriverMutation } = driverApis;
