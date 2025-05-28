@@ -7,35 +7,34 @@ import hand_cash from '../../../assets/icons/hand_cash.svg';
 import trip_distance from '../../../assets/icons/trip_distance.svg';
 
 function Statics({ data }) {
-  const { get_rating, total_rating, driving_info } = data.statics;
   const renderStats = (period) => {
-    const stats = driving_info[period];
+    const stats = data?.statics?.driving_info[period];
     return (
       <div className="grid grid-cols-3 gap-2">
         <div className="shadow flex flex-col items-center justify-center">
           <img className="w-8 mb-2" src={money} alt="" />
           <h2 className="text-xl">Total Earn</h2>
-          <h1>RM {stats.total_earn}</h1>
+          <h1>RM {stats?.total_earn || 0}</h1>
         </div>
         <div className="shadow flex flex-col items-center justify-center">
           <img className="w-8 mb-2" src={hand_cash} alt="" />
           <h2 className="text-xl">Hand Cash</h2>
-          <h1>RM {stats.hand_cash}</h1>
+          <h1>RM {stats?.hand_cash || 0}</h1>
         </div>
         <div className="shadow flex flex-col items-center justify-center">
           <img className="w-8 mb-2" src={online_cash} alt="" />
           <h2 className="text-xl">Online Cash</h2>
-          <h1>RM {stats.online_cash}</h1>
+          <h1>RM {stats?.online_cash || 0}</h1>
         </div>
         <div className="shadow flex flex-col items-center justify-center">
           <img className="w-8 mb-2" src={active_hour} alt="" />
           <h2 className="text-xl">Active Hours</h2>
-          <h1>{stats.active_hours}hrs</h1>
+          <h1>{stats?.active_hours || 0}hrs</h1>
         </div>
         <div className="shadow flex flex-col items-center justify-center">
           <img className="w-8 mb-2" src={trip_distance} alt="" />
           <h2 className="text-xl">Trip Distance</h2>
-          <h1>{stats.trip_distance}km</h1>
+          <h1>{stats?.trip_distance || 0}km</h1>
         </div>
       </div>
     );
@@ -55,15 +54,20 @@ function Statics({ data }) {
   //   { key: '4', label: 'This Year', children: renderStats('this-year') },
   //   { key: '4', label: 'All time', children: renderStats('all-time') },
   // ];
+
+  const onChange = (key) => {
+    console.log(key);
+  };
+
   return (
     <div>
       <div>
         Rating: <br />
         <h3>
-          {Array.from({ length: get_rating }).map((_, index) => (
+          {Array.from({ length: data?.statics?.get_rating }).map((_, index) => (
             <span key={index}>⭐</span>
           ))}
-          {get_rating}/{total_rating}
+          {data?.statics?.get_rating}/{data?.statics?.total_rating}
         </h3>
       </div>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />

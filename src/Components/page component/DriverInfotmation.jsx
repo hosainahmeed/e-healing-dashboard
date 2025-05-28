@@ -40,7 +40,7 @@ function DriverInfotmation({ id }) {
     );
   }
 
-  const driver_data = data.data;
+  const driver_data = data?.data;
   const driver_data_genarale = {
     driver_id: id,
     name: driver_data?.name || 'N/A',

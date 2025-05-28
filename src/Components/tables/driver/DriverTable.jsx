@@ -22,7 +22,6 @@ const DriverTable = () => {
     pageSize: 10,
   });
   const [userBlock, setUserBlock] = useState(false);
-  console.log(selectedId);
   const roleData = {
     role: 'DRIVER',
   };
