@@ -1,4 +1,4 @@
-import { Button, Form, message, Steps } from 'antd';
+import { Button, Form, Steps } from 'antd';
 import React, { useState, useEffect } from 'react';
 import AddCarImage from './add_car_steps/AddCarImage';
 import AddCarGeneralInfo from './add_car_steps/AddCarGeneralInfo';
@@ -142,7 +142,7 @@ function AddNewCar() {
       form.resetFields();
     } catch (error) {
       console.error('Validation failed:', error);
-      message.error('Please complete all required fields');
+      toast.error('Please complete all required fields');
     } finally {
       setLoading(false);
     }
@@ -162,6 +162,7 @@ function AddNewCar() {
       setLoading(true);
       const values = await form.validateFields();
       setDocumentInfo((prevData) => ({ ...prevData, ...values }));
+
       const submitFormData = new FormData();
       const allData = {
         ...generalInfo,
@@ -169,53 +170,67 @@ function AddNewCar() {
         ...documentInfo,
         ...values,
       };
+
+      // Handle car images
       if (imageData.car_image && Array.isArray(imageData.car_image)) {
         imageData.car_image.forEach((file) => {
           submitFormData.append('car_image', file);
         });
       }
+
       if (id) {
         submitFormData.append('carId', id);
       }
 
+      // Handle document files
+      const documentFields = [
+        'car_grant_image',
+        'car_insurance_image',
+        'e_hailing_car_permit_image',
+      ];
+
       Object.entries(allData).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
           if (value && value.format) {
+            // Handle date fields
             submitFormData.append(key, value.format('YYYY-MM-DD'));
-          } else if (
-            key === 'car_grant_image' ||
-            key === 'car_insurance_image' ||
-            key === 'e_hailing_car_permit_image'
-          ) {
-            if (value && value.fileList) {
-              const file = value.fileList[0]?.originFileObj;
-              if (file) {
-                submitFormData.append(key, file);
-              }
-            } else if (value && value.file) {
-              submitFormData.append(key, value.file);
-            } else if (value && typeof value !== 'object') {
+          } else if (documentFields.includes(key)) {
+            // Handle document files - both File objects and existing paths
+            if (value instanceof File) {
               submitFormData.append(key, value);
+            } else if (typeof value === 'string') {
+              // If it's a string path, we need to decide whether to keep it or not
+              // Option 1: Keep the existing path (if no new file was uploaded)
+              submitFormData.append(key, value);
+
+              // Option 2: Or if you want to force re-upload:
+              // if (!fileListStates[key]?.length) {
+              //   submitFormData.append(key, value);
+              // }
             }
           } else if (key !== 'car_image') {
+            // Handle all other fields
             submitFormData.append(key, value);
           }
         }
       });
+
+      // Rest of your submission logic...
       if (id) {
         await updateCar({ submitFormData });
       } else {
-        await addNewCar({ submitFormData });
+        const res = await addNewCar({ submitFormData });
+        if (res?.success) {
+          toast.success(res?.message || 'Car added successfully!');
+          form.resetFields();
+          setCurrent(0);
+          setFormData({});
+          setImageData({ car_image: [] });
+          setGeneralInfo({});
+          setLicenseInfo({});
+          setDocumentInfo({});
+        }
       }
-
-      toast.success('Car added successfully!');
-      form.resetFields();
-      setCurrent(0);
-      setFormData({});
-      setImageData({ car_image: [] });
-      setGeneralInfo({});
-      setLicenseInfo({});
-      setDocumentInfo({});
     } catch (error) {
       console.error('Submission failed:', error);
       toast.error('Failed to add car. Please try again.');
@@ -223,7 +238,6 @@ function AddNewCar() {
       setLoading(false);
     }
   };
-
   return (
     <div className="max-w-4xl mx-auto">
       <Steps current={current} className="!my-12">

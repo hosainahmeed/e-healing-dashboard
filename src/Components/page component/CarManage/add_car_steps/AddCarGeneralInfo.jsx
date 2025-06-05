@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 
-const AddCarGeneralInfo = ({ form }) => {
+const AddCarGeneralInfo = ({ form, initialValues }) => {
   return (
     <div>
       <h3 className="text-lg font-medium mb-4">General Car Information</h3>
-      <Form layout="vertical" form={form}>
+      <Form initialValues={initialValues} layout="vertical" form={form}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Form.Item
             name="brand"

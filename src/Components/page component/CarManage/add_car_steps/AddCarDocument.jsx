@@ -75,13 +75,13 @@ const AddCarDocument = ({ form, initialValues }) => {
   const handleDocumentChange = (info, fieldName, setState) => {
     const { fileList } = info;
     setState(fileList);
-    if (fileList.length > 0) {
-      const file = fileList[0].originFileObj;
-      const fieldValue = { fileList: [info.file] }; // Keep the file object
-      form.setFieldsValue({ [fieldName]: fieldValue });
-    } else {
-      form.setFieldsValue({ [fieldName]: undefined });
-    }
+    
+    form.setFieldsValue({
+      [fieldName]:
+        fileList.length > 0
+          ? fileList[0].originFileObj || fileList[0].url
+          : undefined,
+    });
   };
 
   const handleRemove = (file, fieldName, setState) => {
