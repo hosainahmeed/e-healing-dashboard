@@ -19,7 +19,6 @@ function AddNewCar() {
   const id = location.state;
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
-  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [addNewCar] = useCreateNewCarMutation();
   const [initialData, setInitialData] = useState({});
@@ -61,14 +60,6 @@ function AddNewCar() {
     setInitialData(data);
   }, [singleCarData, form]);
 
-  useEffect(() => {
-    setFormData({
-      ...imageData,
-      ...generalInfo,
-      ...licenseInfo,
-      ...documentInfo,
-    });
-  }, [imageData, generalInfo, licenseInfo, documentInfo]);
   useEffect(() => {
     setImageData(singleCarData?.data?.car_image);
   }, [singleCarData]);
@@ -217,19 +208,26 @@ function AddNewCar() {
 
       // Rest of your submission logic...
       if (id) {
-        await updateCar({ submitFormData });
+        await updateCar({ submitFormData })
+          .unwrap()
+          .then((res) => {
+            if (res?.success) {
+              toast.success(res?.message || 'Car updated successfully!');
+              window.location.reload();
+            }
+          });
       } else {
-        const res = await addNewCar({ submitFormData });
-        if (res?.success) {
-          toast.success(res?.message || 'Car added successfully!');
-          form.resetFields();
-          setCurrent(0);
-          setFormData({});
-          setImageData({ car_image: [] });
-          setGeneralInfo({});
-          setLicenseInfo({});
-          setDocumentInfo({});
-        }
+        await addNewCar({ submitFormData })
+          .unwrap()
+          .then((res) => {
+            toast.success(res?.message || 'Car added successfully!');
+            form.resetFields();
+            setCurrent(0);
+            setImageData({ car_image: [] });
+            setGeneralInfo({});
+            setLicenseInfo({});
+            setDocumentInfo({});
+          });
       }
     } catch (error) {
       console.error('Submission failed:', error);
