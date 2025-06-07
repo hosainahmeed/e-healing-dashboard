@@ -13,7 +13,7 @@ function DriverManage() {
     <div>
       <div className="flex items-center justify-between">
         <PageHeading title={'Driver'} />
-        <Link to={'/add-car'}>
+        <Link to={'/add-new-driver'}>
           <Button
             style={{ marginTop: '1rem' }}
             text={'Add New Driver'}

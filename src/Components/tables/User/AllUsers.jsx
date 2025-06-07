@@ -23,7 +23,7 @@ const AllUsers = ({ recentUser }) => {
   const { data: statsData, isLoading: statsLoading } = useUserTripStatesQuery({
     id: userID,
   });
-  console.log(statsData);
+
   const params = { role: 'USER' };
   const {
     data: userData,
@@ -36,26 +36,33 @@ const AllUsers = ({ recentUser }) => {
     name: user?.name,
     email: user?.email,
   };
-  console.log(singleUserData);
+  // console.log(singleUserData);
   const handleStatusChange = async (userId, newStatus) => {
-    // try {
-    //   const res = await updateUserStatus({
-    //     userId,
-    //     status: newStatus,
-    //   }).unwrap();
-    //   console.log(res);
-    //   toast.success('User status updated successfully');
-    //   refetch();
-    // } catch (error) {
-    //   toast.error('Failed to update user status');
-    //   console.error('Update error:', error);
-    // }
+    // console.log(userId, newStatus);
+
+    const data = {
+      authId:userId,
+      status: newStatus,
+    };
+    try {
+      await updateUserStatus({ data })
+        .unwrap()
+        .then((res) => {
+          if (res?.success) {
+            toast.success('User status updated successfully');
+            refetch();
+          }
+        });
+    } catch (error) {
+      toast.error('Failed to update user status');
+      console.error('Update error:', error);
+    }
   };
 
   const userDataShowing = recentUser
     ? userData?.data?.result.slice(0, 4)
     : userData?.data?.result;
-console.log(userData)
+
   const users = userDataShowing?.map((user) => ({
     key: user?._id,
     id: user?._id,
@@ -247,9 +254,7 @@ console.log(userData)
         footer={null}
       >
         {singleUserDataLoading && statsLoading ? (
-          <div>
-            loading
-          </div>
+          <div>loading</div>
         ) : (
           <>
             <div className="mx-auto p-1 border rounded-sm !w-fit center-center my-3">

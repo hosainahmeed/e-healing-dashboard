@@ -65,7 +65,7 @@ export const Routes = createBrowserRouter([
         element: <AddNewCar />,
       },
       {
-        path: '/add-car',
+        path: '/add-new-driver',
         element: <DriverRegistrationForm />,
       },
       {
