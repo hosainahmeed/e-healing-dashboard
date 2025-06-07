@@ -285,9 +285,6 @@ export const SidebarLink = [
       ),
     },
   },
-];
-
-export const SettingLinks = [
   {
     path: '/terms-condition',
     label: 'Terms & Condition',
@@ -465,3 +462,4 @@ export const SettingLinks = [
     },
   },
 ];
+
