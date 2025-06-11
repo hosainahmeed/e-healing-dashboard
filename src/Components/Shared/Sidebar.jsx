@@ -10,19 +10,12 @@ import { MdArrowForwardIos } from 'react-icons/md';
 const Sidebar = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
-  const [setting_active, set_setting_active] = useState(false);
   // const navigate = useNavigate();
   const ref = useRef(null);
-  const toggleHandler = () => {
-    setOpen(!open);
-  };
   useEffect(() => {
     if (!ref.current) return;
     if (ref.current.querySelector('.active')) {
       setOpen(true);
-      set_setting_active(true);
-    } else {
-      set_setting_active(false);
     }
   }, [ref, location.pathname]);
 
@@ -33,7 +26,6 @@ const Sidebar = () => {
         <NavLink
           onClick={() => {
             setOpen(false);
-            set_setting_active(false);
           }}
           to={item?.path}
           style={{
