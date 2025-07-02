@@ -2,15 +2,10 @@ import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router';
 import { SidebarLink } from '../../Utils/Sideber/SidebarLink.jsx';
-import { IoSettings } from 'react-icons/io5';
-import Button from './Button.jsx';
-import { MdArrowForwardIos } from 'react-icons/md';
-// import logo from "../../assets/logo.png";
 
 const Sidebar = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
-  // const navigate = useNavigate();
   const ref = useRef(null);
   useEffect(() => {
     if (!ref.current) return;
@@ -21,7 +16,6 @@ const Sidebar = () => {
 
   return (
     <div className=" px-4 pb-10 flex justify-start flex-col gap-3 sidebar">
-      {/* <p className='text-6xl text-center text-[var(--bg-white)] my-4 font-bold'>ilera</p> */}
       {SidebarLink?.map((item) => (
         <NavLink
           onClick={() => {

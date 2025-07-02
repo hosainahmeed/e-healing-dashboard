@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Tabs } from 'antd';
+import { Card, Divider, Tabs } from 'antd';
 import General from './DrivingInformation Parts/General';
 import Driving from './DrivingInformation Parts/Driving';
 import Car from './DrivingInformation Parts/Car';
@@ -10,34 +10,7 @@ import { imageUrl } from '../../Utils/server';
 function DriverInfotmation({ id }) {
   const { data, isLoading } = useGetDriverQuery({ driverId: id });
   if (isLoading) {
-    return (
-      <div>
-        <div className="flex items-center flex-col justify-center">
-          <div className="w-24 h-24 bg-gray-200 animate-pulse rounded-full"></div>
-          <div className="w-full">
-            <Divider></Divider>
-            <div className=" flex items-start gap-2 justify-start">
-              {Array.from({ length: 7 }).map((_, x) => (
-                <div
-                  key={x}
-                  className="w-12 h-3 bg-gray-200 animate-pulse rounded-md mb-2"
-                ></div>
-              ))}
-            </div>
-            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-56 mt-7 h-4 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="w-32 mt-2  h-4 bg-gray-200 animate-pulse rounded-md"></div>
-          </div>
-        </div>
-      </div>
-    );
+    return <Card loading></Card>;
   }
 
   const driver_data = data?.data;

@@ -6,6 +6,7 @@ import {
   useGetPrivacyPolicyQuery,
   useUpdatePrivacyPolicyMutation,
 } from '../../../Redux/services/settings/privacyPolicyApis.js';
+import toast from 'react-hot-toast';
 
 const PrivacyPolicy = () => {
   const [content, setContent] = useState('');
@@ -21,12 +22,21 @@ const PrivacyPolicy = () => {
 
   const handleLogContent = async () => {
     try {
-      await setDescription({ description: content }).unwrap();
+      await setDescription({ description: content })
+        .unwrap()
+        .then((res) => {
+          if (res?.success) {
+            toast.success(
+              res?.message || 'Privacy policy updated successfully'
+            );
+          } else {
+            toast.error(res?.message || 'Something went wrong');
+          }
+        });
     } catch (error) {
-      console.log(error);
+      toast.error(error?.data?.message || 'Something went wrong');
     }
   };
-
 
   if (isLoading) {
     return (
@@ -34,11 +44,7 @@ const PrivacyPolicy = () => {
         <div className="w-48 h-6 mb-3 rounded-md animate-pulse bg-gray-200"></div>
         <div className="w-full p-3 flex flex-col gap-2 min-h-[600px] animate-pulse rounded-md bg-gray-200">
           {Array.from({ length: 22 }).map((_, x) => (
-            <div
-              key={x}
-              className="bg-gray-300 h-3 w-full animate-pulse"
-              
-            ></div>
+            <div key={x} className="bg-gray-300 h-3 w-full animate-pulse"></div>
           ))}
         </div>
         <div className="w-32 h-8 mt-3 rounded-md animate-pulse bg-gray-200"></div>

@@ -18,8 +18,8 @@ import PrivateRoute from './PrivetRoute';
 import PrivacyPolicy from '../pages/DashboardPages/privacy&policy/PrivacyPolicy';
 import Profile from '../pages/DashboardPages/ProfilePages/Profile';
 import AddNewCar from '../Components/page component/CarManage/AddNewCar';
-import AddCarImage from '../Components/page component/CarManage/add_car_steps/AddCarImage';
-import AddCarGeneralInfo from '../Components/page component/CarManage/add_car_steps/AddCarGeneralInfo';
+// import AddCarImage from '../Components/page component/CarManage/add_car_steps/AddCarImage';
+// import AddCarGeneralInfo from '../Components/page component/CarManage/add_car_steps/AddCarGeneralInfo';
 import FrequentlyAskedQuestions from '../pages/DashboardPages/FrequentlyAskedQuestions/FrequentlyAskedQuestions';
 import DriverRegistrationForm from '../Components/page component/DriverRegistrationForm';
 
