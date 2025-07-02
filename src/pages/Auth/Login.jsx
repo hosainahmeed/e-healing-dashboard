@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input, Button, Typography, Card } from 'antd';
-import { EyeTwoTone } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router';
@@ -57,6 +56,7 @@ const Login = () => {
             }}
           >
             <Input
+            className='!rounded-sm !px-3 !h-12'
               placeholder="MichealScott@gmail.com"
               type="email"
               style={{
@@ -85,13 +85,7 @@ const Login = () => {
             }}
           >
             <Input.Password
-              iconRender={(visible) => (
-                <EyeTwoTone
-                  twoToneColor={
-                    visible ? 'var(--color-white)' : 'var(--color-white)'
-                  }
-                />
-              )}
+            className='!rounded-sm !px-3 !h-12'
               placeholder="Password"
               style={{
                 width: '100%',

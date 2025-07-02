@@ -44,6 +44,7 @@ const ForgetPassword = () => {
           >
             <Input
               placeholder="MichealScott@gmail.com"
+              className="!rounded-sm !px-3 !h-12"
               type="email"
               style={{
                 width: '100%',
