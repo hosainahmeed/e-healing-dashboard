@@ -18,9 +18,6 @@
   --bg-white: #fefefe;
 }
 
-/* .button-white {
-  @apply px-8 py-3 rounded-md flex justify-center items-center w-fit gap-2 bg-[var(--bg-pink-high)] text-[var(--text-gray)]  hover:scale-105 transition-all active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100;
-} */
 * {
   font-family: 'Poppins';
 }
@@ -65,33 +62,6 @@ body {
   .end-center {
     @apply flex justify-end items-center;
   }
-
-  .grid-5 {
-    @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center lg:grid-cols-3 xl:grid-cols-5 gap-4;
-  }
-  .grid-4 {
-    @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center lg:grid-cols-3 xl:grid-cols-4 gap-4;
-  }
-
-  .grid-3 {
-    @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center lg:grid-cols-3 gap-4;
-  }
-
-  .grid-2 {
-    @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center gap-4;
-  }
-
-  .grid-3 {
-    @apply md:grid md:grid-cols-2 xl:grid-cols-3 flex flex-col justify-start items-start md:items-center gap-4;
-  }
-
-  .grid-2-start {
-    @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start gap-4;
-  }
-
-  /* .button-black {
-    @apply px-8 py-3 rounded-md flex justify-center items-center w-fit gap-2 bg-[var(--color-blue)] text-[var(--color-white)] border border-[var(--bg-black)] hover:scale-105 transition-all active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100;
-  } */
 
   .button-white {
     @apply px-8 py-3 rounded-md flex justify-start items-center w-fit gap-2 bg-[var(--color-white)] text-[var(--bg-black)]  hover:scale-102 transition-all active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100;

@@ -10,6 +10,7 @@ import {
   useGetDriverQuery,
   useUpdateDriverMutation,
 } from '../../Redux/services/dashboard apis/userApis/driverApis';
+import { useGetAllCarsQuery } from '../../Redux/services/carApis';
 
 const { Step } = Steps;
 
@@ -24,7 +25,8 @@ const DriverRegistrationForm = () => {
   const [createDriver] = useCreateDriverMutation();
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
-
+  const { data: carData } = useGetAllCarsQuery();
+  console.log(carData);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -543,13 +545,11 @@ const DriverRegistrationForm = () => {
               rules={[{ required: true, message: 'Please select a car' }]}
             >
               <Select placeholder="Select an available car" size="large">
-                <Select.Option value="car1">
-                  Toyota Camry (ABC123)
-                </Select.Option>
-                <Select.Option value="car2">Honda Civic (XYZ789)</Select.Option>
-                <Select.Option value="car3">
-                  Ford Explorer (DEF456)
-                </Select.Option>
+                {carData?.data?.cars?.map((car) => (
+                  <Select.Option key={car._id} value={car._id}>
+                    {car.name}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </div>
